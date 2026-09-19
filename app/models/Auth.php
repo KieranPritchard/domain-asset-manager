@@ -44,5 +44,40 @@
 
             return "";
         }
+
+        // Method to login the user
+        public function login_user(string $username, string $password): string
+        {
+            // Statement to find the user
+            $find_user_statement = $this->db->prepare("SELECT * FROM users WHERE username = (?)");
+
+            // Binds the parameters
+            $find_user_statement->bind_param("s", $username);
+
+            // Executes the statement
+            $find_user_statement->execute();
+
+            // Checks the number of rows
+            if ($find_user_statement->num_rows() !== 1) {
+                return "Username/password do not match.";
+                exit(1);
+            }
+
+            // Stores the result
+            $row = $find_user_statement->get_result()->fetch_assoc();
+
+            // Verifies the password
+            if (!password_verify($password, $row["password_hash"])) {
+                return "Username/password do not match.";
+                exit(1);
+            }
+
+            // Sets the sessions
+            $_SESSION["id"] = $row["id"];
+            $_SESSION["username"] = $row["username"];
+            $_SESSION["loggedin"] = true;
+
+            return "";
+        }
     }
 ?>
