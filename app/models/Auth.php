@@ -81,13 +81,15 @@
         }
 
         // Method to check if the user is logged in
-        public function is_loggedin():void
+        public function is_loggedin():bool
         {
             // Checks if the user not is logged in
             if (!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"]) {
-                header("location: /");
+                return false;
                 exit(1);
             }
+
+            return true;
         }
 
         // Method to logout user
