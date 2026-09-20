@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=localhost
+      - DB_USER=root
+      - DB_PASSWORD=/run/secrets/db-password
+      - DB_DATABASE=dns_record_manager
+    secrets:
+      - db-password
+    depends_on:
+      db:
+        condition: service_healthy
+    command: "php -S 0.0.0.0:3000"
+  db:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db-password
+      MYSQL_DATABASE: dns_record_manager
+    secrets:
+      - db-password
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --password=$$(cat /run/secrets/db-password) || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+volumes:
+  db-data:
+secrets:
+  db-password:
+    file: secrets/db/password.txt
