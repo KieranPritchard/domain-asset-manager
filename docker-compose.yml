@@ -2,11 +2,11 @@ services:
   app:
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     environment:
-      - DB_HOST=localhost
+      - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD=/run/secrets/db-password
       - DB_DATABASE=dns_record_manager
@@ -15,7 +15,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: "php -S 0.0.0.0:3000"
+    command: php -S 0.0.0.0:3000 -t public
   db:
     image: mysql
     restart: always
@@ -37,4 +37,4 @@ volumes:
   db-data:
 secrets:
   db-password:
-    file: secrets/db/password.txt
+    file: ./secrets/db/password.txt

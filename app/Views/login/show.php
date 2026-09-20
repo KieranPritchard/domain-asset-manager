@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domain Inventory Dashboard | Login</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body class="min-h-screen flex flex-col justify-center items-center bg-slate-50 px-4 py-12">
     <!-- Stores the login form -->

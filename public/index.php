@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 spl_autoload_register(function ($class) {
     $class = str_replace('App\\', '', $class);
     $path = __DIR__ . '/../app/' . str_replace('\\', '/', $class) . '.php'; // add ../

@@ -42,7 +42,7 @@ WORKDIR /usr/src/malware-scan-pipeline
 COPY . .
 
 # Overwrite vendor folder with cleaned production dependencies from build stage
-COPY --from=build-stage /app/vendor ./vendor
+COPY --from=build /usr/src/dns-record-manager/vendor ./vendor
 
 # Expose port and bind to all interfaces
 EXPOSE 3000

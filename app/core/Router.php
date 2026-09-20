@@ -11,6 +11,12 @@
             $this->routes["GET"][$uri] = $controllerAction;
         }
 
+        // Method to get the uri and action
+        public function post(string $uri, string $controllerAction):void
+        {
+            $this->routes["POST"][$uri] = $controllerAction;
+        }
+
         // Method to dispatch uri
         public function dispatch(string $uri): void
         {

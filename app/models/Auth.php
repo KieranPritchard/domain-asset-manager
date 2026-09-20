@@ -84,7 +84,7 @@
         public function is_loggedin():bool
         {
             // Checks if the user not is logged in
-            if (!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"]) {
+            if (!isset($_SESSION["loggedin"]) || !$_SESSION["loggedin"]) {
                 return false;
             }
 

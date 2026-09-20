@@ -5,10 +5,10 @@
     
     class LoginController extends Controller
     {
-        public function show(array $params): void
+        public function show(array $params = []): void
         {
             // Stores the login error
-            $login_error = $params["error"];
+            $login_error = $params["error"] ?? null;
 
             // Shows the login page
             $this->view("login/show", ["error" => $login_error]);
