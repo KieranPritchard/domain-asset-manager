@@ -24,7 +24,7 @@ COPY tailwind.config.js ./
 COPY app/Views ./app/Views
 COPY public/assets/css/input.css ./public/assets/css/input.css
 
-RUN npx tailwindcss \
+RUN npx @tailwindcss/cli \
     -i public/assets/css/input.css \
     -o public/assets/css/main.css \
     --minify
