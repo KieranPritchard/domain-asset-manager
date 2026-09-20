@@ -62,11 +62,11 @@
             </button>
 
             <!-- Allows the user to go and create an account -->
-            <p className="text-center text-sm text-slate-600 pt-3 border-t border-slate-100">
+            <p class="text-center text-sm text-slate-600 pt-3 border-t border-slate-100">
                 Don't have an account?
                 <a 
                     href="/signup" 
-                    className="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
+                    class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
                 >
                     Create account
                 </a>
