@@ -79,5 +79,22 @@
 
             return "";
         }
+
+        // Method to check if the user is logged in
+        public function is_loggedin():void
+        {
+            // Checks if the user not is logged in
+            if (!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"]) {
+                header("location: /");
+                exit(1);
+            }
+        }
+
+        // Method to logout user
+        public function logout():void
+        {
+            session_unset();
+            session_destroy();
+        }
     }
 ?>
