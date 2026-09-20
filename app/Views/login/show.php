@@ -22,18 +22,25 @@
         <!-- Form to collect the user input -->
         <form action="/login" method="post" class="space-y-4">
             <div class="space-y-3">
-                <div class="flex flex-col space-y-1.5 mb-4">
-                    <label for="username" class="text-sm font-medium text-slate-700">
-                        Username
-                    </label>
-                    <input 
-                        required
-                        name="username"
-                        id="usernameField"
-                        type="text"
-                        placeholder="Enter your username"
-                        class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
-                    >
+                <div>
+                    <div class="flex flex-col space-y-1.5 mb-4">
+                        <label for="username" class="text-sm font-medium text-slate-700">
+                            Username
+                        </label>
+                        <input 
+                            required
+                            onkeyup="validateUsernameField()"
+                            name="username"
+                            id="usernameField"
+                            type="text"
+                            placeholder="Enter your username"
+                            class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
+                        >
+                    </div>
+                    <!-- Stores the error box -->
+                    <div class="flex justify-between -mt-2">
+                        <span id="usernameError" class="hidden text-xs font-semibold text-red-600"></span>
+                    </div>
                 </div>
 
                 <!-- Stores the password -->
@@ -74,6 +81,7 @@
             <button
                 type="submit"
                 id="submitBtn"
+                onsubmit="handleLoginSubmit()"
                 class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors cursor-pointer"
             >
                 Submit Files
@@ -85,5 +93,8 @@
             </p>
         </form>
     </div>
+
+    <!-- Connects to the javascript -->
+    <script src="/assets/js/forms/login/login.js"></script>
 </body>
 </html>
