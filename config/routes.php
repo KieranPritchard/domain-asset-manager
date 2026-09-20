@@ -7,5 +7,8 @@
 
     // Login page controllers
     $router->get("/login", "LoginController@show");
-    $router->post("/login", "LoginController@sign_in")
+    $router->post("/login", "LoginController@sign_in");
+
+    // Handles the register routes
+    $router->get("/register", "RegisterController@show");
 ?>
