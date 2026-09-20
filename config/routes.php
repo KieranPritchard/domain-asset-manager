@@ -7,4 +7,5 @@
 
     // Login page controllers
     $router->get("/login", "LoginController@show");
+    $router->post("/login", "LoginController@sign_in")
 ?>

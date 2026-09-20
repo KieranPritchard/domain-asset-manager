@@ -2,9 +2,29 @@
     namespace App\Controllers;
 
     use Core\Controller;
+    use App\Models\Auth;
     
     class LoginController extends Controller
     {
+        public function sign_in():void
+        {
+            // Stores the username and password
+            $username = htmlspecialchars(trim($_POST["username"]));
+            $password = htmlspecialchars(trim($_POST["password"]));
+
+            // Stores the error
+            $error = (new Auth())->login_user($username, $password);
+
+            // Checks if there is an error
+            if ($error) {
+                $this->show(["error" => $error]);
+            }
+
+            // Redirects the user
+            header("location: /home");
+        }
+
+        // Method to show the page
         public function show(array $params = []): void
         {
             // Stores the login error

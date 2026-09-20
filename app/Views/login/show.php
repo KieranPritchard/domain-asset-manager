@@ -16,12 +16,13 @@
 
         <!-- Form to collect the user input -->
         <form action="/login" method="post" class="space-y-4">
-            <div class="space-y-3"">
+            <div class="space-y-3">
                 <div class="flex flex-col space-y-1.5 mb-4">
                     <label for="username" class="text-sm font-medium text-slate-700">
                         Username
                     </label>
                     <input 
+                        name="username"
                         type="text"
                         placeholder="Enter your username"
                         class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
@@ -31,10 +32,11 @@
                 <!-- Stores the password -->
                 <div>
                     <div class="flex flex-col space-y-1.5 mb-4">
-                        <label for="username" class="text-sm font-medium text-slate-700">
+                        <label for="password" class="text-sm font-medium text-slate-700">
                             Password
                         </label>
                         <input 
+                            name="password"
                             type="password"
                             placeholder="Enter your password"
                             class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
@@ -51,6 +53,14 @@
                     </div>
                 </div>
             </div>
+
+            <?php if($login_error["error"]){ ?>
+                <div>
+                    <span className="text-xs font-medium text-red-500 mt-1">
+                        <?= $login_error["error"] ?>
+                    </span>
+                </div>
+            <?php } ?>
         
             <!-- Submit Button -->
             <button
@@ -63,13 +73,7 @@
 
             <!-- Allows the user to go and create an account -->
             <p class="text-center text-sm text-slate-600 pt-3 border-t border-slate-100">
-                Don't have an account?
-                <a 
-                    href="/signup" 
-                    class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
-                >
-                    Create account
-                </a>
+                Don't have an account? <a href="/signup" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">Create account</a>
             </p>
         </form>
     </div>
