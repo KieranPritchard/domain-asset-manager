@@ -27,7 +27,9 @@
                         Username
                     </label>
                     <input 
+                        required
                         name="username"
+                        id="usernameField"
                         type="text"
                         placeholder="Enter your username"
                         class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
@@ -41,6 +43,7 @@
                             Password
                         </label>
                         <input 
+                            required
                             name="password"
                             type="password"
                             placeholder="Enter your password"
