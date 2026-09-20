@@ -1,0 +1,10 @@
+{
+    "name": "kieranpritchard/dns_record_manger",
+    "authors": [
+        {
+            "name": "Kieran Pritchard",
+            "email": "KieranPritchard06@gmail.com"
+        }
+    ],
+    "require": {}
+}
