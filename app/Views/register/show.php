@@ -1,3 +1,8 @@
+<?php 
+    // Guards against unset errors
+    $register_error = $data["error"] ?? null;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,7 +65,7 @@
                 </div>
             </div>
 
-            <?php if($register_error["error"]){ ?>
+            <?php if($register_error){ ?>
                 <div>
                     <span className="text-xs font-medium text-red-500 mt-1">
                         <?= $register_error["error"] ?>
@@ -79,7 +84,7 @@
 
             <!-- Allows the user to go and create an account -->
             <p class="text-center text-sm text-slate-600 pt-3 border-t border-slate-100">
-                Don't have an account? <a href="/signup" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">Create account</a>
+                Already have an account? <a href="/login" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">Login</a>
             </p>
         </form>
     </div>

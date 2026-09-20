@@ -36,7 +36,7 @@ LABEL authors="kieranpritchard"
 
 RUN docker-php-ext-install mysqli
 
-WORKDIR /usr/src/malware-scan-pipeline
+WORKDIR /usr/src/dns-record-manager
 
 # Copy application source code
 COPY . .

@@ -1,3 +1,8 @@
+<?php 
+    // Guards against unset errors
+    $login_error = $data["error"] ?? null;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,7 +59,7 @@
                 </div>
             </div>
 
-            <?php if($login_error["error"]){ ?>
+            <?php if($login_error){ ?>
                 <div>
                     <span className="text-xs font-medium text-red-500 mt-1">
                         <?= $login_error["error"] ?>
