@@ -1,5 +1,5 @@
 <?php 
-    namespace Apps\Models;
+    namespace App\Models;
 
     use Core\Model;
 
@@ -86,7 +86,6 @@
             // Checks if the user not is logged in
             if (!isset($_SESSION["loggedin"]) && !$_SESSION["loggedin"]) {
                 return false;
-                exit(1);
             }
 
             return true;
