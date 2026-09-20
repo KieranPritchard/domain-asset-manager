@@ -51,14 +51,17 @@
                         </label>
                         <input 
                             required
+                            onkeyup="validatePasswordField()"
                             name="password"
                             type="password"
+                            id="passwordField"
                             placeholder="Enter your password"
                             class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
                         >
                     </div>
                     <!-- Forget password link -->
-                    <div class="flex justify-end -mt-2">
+                    <div class="flex justify-between -mt-2">
+                        <span id="passwordError" class="hidden text-xs font-semibold text-red-600"></span>
                         <a 
                             href=""
                             class="text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
