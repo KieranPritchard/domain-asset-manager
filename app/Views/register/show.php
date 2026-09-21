@@ -22,16 +22,25 @@
         <!-- Form to collect the user input -->
         <form action="/login" method="post" class="space-y-4">
             <div class="space-y-3">
-                <div class="flex flex-col space-y-1.5 mb-4">
-                    <label for="username" class="text-sm font-medium text-slate-700">
-                        Username
-                    </label>
-                    <input 
-                        name="username"
-                        type="text"
-                        placeholder="Enter your username"
-                        class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
-                    >
+                <div>
+                    <div class="flex flex-col space-y-1.5 mb-4">
+                        <label for="username" class="text-sm font-medium text-slate-700">
+                            Username
+                        </label>
+                        <input 
+                            required
+                            onkeyup="validateUsernameField()"
+                            name="username"
+                            id="usernameField"
+                            type="text"
+                            placeholder="Enter your username"
+                            class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
+                        >
+                    </div>
+                    <!-- Stores the error box -->
+                    <div class="flex justify-between -mt-2">
+                        <span id="usernameError" class="hidden text-xs font-semibold text-red-600"></span>
+                    </div>
                 </div>
 
                 <!-- Stores the password -->
@@ -41,11 +50,18 @@
                             Password
                         </label>
                         <input 
+                            required
+                            onkeyup="validatePasswordField()"
                             name="password"
                             type="password"
+                            id="passwordField"
                             placeholder="Enter your password"
                             class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
                         >
+                    </div>
+                    <!-- Forget password link -->
+                    <div class="flex justify-between -mt-2">
+                        <span id="passwordError" class="hidden text-xs font-semibold text-red-600"></span>
                     </div>
                 </div>
 
@@ -61,6 +77,9 @@
                             placeholder="Enter your password"
                             class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
                         >
+                    </div>
+                    <div class="flex justify-between -mt-2">
+                        <span id="confirmPasswordError" class="hidden text-xs font-semibold text-red-600"></span>
                     </div>
                 </div>
             </div>
