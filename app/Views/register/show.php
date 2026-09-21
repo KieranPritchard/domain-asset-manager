@@ -72,8 +72,11 @@
                             Confirm Password
                         </label>
                         <input 
+                            required
+                            onkeyup="validateConfirmPasswordField()"
                             name="confirm-password"
                             type="password"
+                            id="confirmPasswordField"
                             placeholder="Enter your password"
                             class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
                         >
@@ -107,5 +110,8 @@
             </p>
         </form>
     </div>
+
+    <!-- Connects to the script -->
+    <script src="/assets/js/forms/register/register.js"></script>
 </body>
 </html>
