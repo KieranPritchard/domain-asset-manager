@@ -48,9 +48,33 @@ function validatePasswordField(){
     const passwordField = document.getElementById("passwordField").value
     const passwordError = document.getElementById("passwordError")
 
+    // Password checks
+    const hasNumber = /\d/.test(passwordField)
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(passwordField)
+
     // Performs a length check
     if (passwordField.length < 8) {
         passwordError.innerText = "Passwords must be at least 8 characters"
+        passwordError.classList.remove("hidden")
+
+        // Adds the disabled attribute to the button
+        submitButton.setAttribute("disabled", "")
+
+        // Removes the curser pointer and adds the disabled one
+        submitButton.classList.remove("cursor-pointer")
+        submitButton.classList.add("cursor-not-allowed")
+    } else if (!hasNumber) {
+        passwordError.innerText = "Password must include at least one number"
+        passwordError.classList.remove("hidden")
+
+        // Adds the disabled attribute to the button
+        submitButton.setAttribute("disabled", "")
+
+        // Removes the curser pointer and adds the disabled one
+        submitButton.classList.remove("cursor-pointer")
+        submitButton.classList.add("cursor-not-allowed")
+    } else if (!hasSpecialChar) {
+        passwordError.innerText = "Password must include at least one special character"
         passwordError.classList.remove("hidden")
 
         // Adds the disabled attribute to the button
