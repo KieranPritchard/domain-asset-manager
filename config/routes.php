@@ -11,4 +11,5 @@
 
     // Handles the register routes
     $router->get("/signup", "RegisterController@show");
+    $router->post("/signup", "RegisterController@register_user");
 ?>

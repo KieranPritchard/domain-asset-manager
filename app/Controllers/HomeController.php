@@ -11,31 +11,31 @@
         private function build_db() {
             $db = new Database()->connect();
 
-            // Table query
             $users_table = "
                 CREATE TABLE IF NOT EXISTS users (
-                    id int AUTO_INCREMENT PRIMARY KEY,
-                    username varchar(255) NOT NULL,
-                    password_hash varchar(255) NOT NULL,
-                    created_at date DEFAULT CURRENT_DATE
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    username VARCHAR(255) NOT NULL,
+                    password_hash VARCHAR(255) NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
                 )
             ";
+
             $domains_table = "
                 -- Top-level domains being tracked
-                CREATE TABLE domains (
+                CREATE TABLE IF NOT EXISTS domains (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     user_id INT NOT NULL,
                     name VARCHAR(255) NOT NULL UNIQUE,        -- e.g. 'example.com'
                     registrar VARCHAR(255),
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
                 );
             ";
 
             $subdomain_table = "
                 -- Discovered/tracked subdomains
-                CREATE TABLE subdomains (
+                CREATE TABLE IF NOT EXISTS subdomains (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     domain_id INT NOT NULL,
                     fqdn VARCHAR(255) NOT NULL UNIQUE,        -- e.g. 'api.example.com'
@@ -48,7 +48,7 @@
 
             $records_table = "
                 -- DNS records for each subdomain (a subdomain can have many record types)
-                CREATE TABLE dns_records (
+                CREATE TABLE IF NOT EXISTS dns_records (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     subdomain_id INT NOT NULL,
                     record_type ENUM('A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'SOA', 'SRV') NOT NULL,
@@ -62,7 +62,7 @@
 
             $history_table = "
                 -- History log so you can see what changed and when (useful for detecting takeovers/drift)
-                CREATE TABLE record_history (
+                CREATE TABLE IF NOT EXISTS record_history (
                     id INT AUTO_INCREMENT PRIMARY KEY,
                     subdomain_id INT NOT NULL,
                     record_type VARCHAR(10) NOT NULL,
@@ -74,12 +74,17 @@
                 );
             ";
 
-            // Runs the queries
-            $db->query($users_table);
-            $db->query($domains_table);
-            $db->query($subdomain_table);
-            $db->query($records_table);
-            $db->query($history_table);
+            try{
+                // Runs the queries
+                $db->query($users_table);
+                $db->query($domains_table);
+                $db->query($subdomain_table);
+                $db->query($records_table);
+                $db->query($history_table);
+            } catch (\Throwable $e) {
+                error_log("build_db failed: " . $e->getMessage());
+                throw $e;
+            }
         }
 
         // Index command

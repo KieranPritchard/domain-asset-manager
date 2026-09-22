@@ -11,7 +11,7 @@
             // Stores the username and password
             $username = htmlspecialchars(trim($_POST["username"]));
             $password = htmlspecialchars(trim($_POST["password"]));
-            $confim_password = htmlspecialchars(trim($_POST["confirm_password"]));
+            $confim_password = htmlspecialchars(trim($_POST["confirm-password"]));
 
             // Stores the error
             $error = (new Auth())->register_user($username, $password, $confim_password);

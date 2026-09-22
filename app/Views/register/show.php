@@ -20,7 +20,7 @@
         </div>
 
         <!-- Form to collect the user input -->
-        <form action="/login" method="post" class="space-y-4">
+        <form action="/signup" method="post" class="space-y-4">
             <div class="space-y-3">
                 <div>
                     <div class="flex flex-col space-y-1.5 mb-4">
@@ -101,7 +101,7 @@
                 id="submitBtn"
                 class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors cursor-pointer"
             >
-                Submit Files
+                Register
             </button>
 
             <!-- Allows the user to go and create an account -->
