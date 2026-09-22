@@ -8,21 +8,27 @@
     {
         public function register_user():void
         {
-            // Stores the username and password
-            $username = htmlspecialchars(trim($_POST["username"]));
-            $password = htmlspecialchars(trim($_POST["password"]));
-            $confim_password = htmlspecialchars(trim($_POST["confirm-password"]));
+            try {
+                // Stores the username and password
+                $username = htmlspecialchars(trim($_POST["username"]));
+                $password = htmlspecialchars(trim($_POST["password"]));
+                $confim_password = htmlspecialchars(trim($_POST["confirm-password"]));
 
-            // Stores the error
-            $error = (new Auth())->register_user($username, $password, $confim_password);
+                // Stores the error
+                $error = (new Auth())->register_user($username, $password, $confim_password);
 
-            // Checks if there is an error
-            if ($error) {
-                $this->show(["error" => $error]);
+                // Checks if there is an error
+                if ($error) {
+                    $this->show(["error" => $error]);
+                    return; 
+                }
+
+                // Redirects the user
+                header("location: /login");
+            } catch (\Throwable $e) {
+                error_log("build_db failed: " . $e->getMessage());
+                throw $e;
             }
-
-            // Redirects the user
-            header("location: /home");
         }
 
         // Method to show the page

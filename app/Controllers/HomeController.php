@@ -84,6 +84,8 @@
             } catch (\Throwable $e) {
                 error_log("build_db failed: " . $e->getMessage());
                 throw $e;
+            } finally {
+                $db->close();
             }
         }
 

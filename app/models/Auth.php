@@ -7,7 +7,7 @@
     class Auth extends Model
     {
         // Method to register user
-        public function register_user(string $username, string $password, string $confirm_password):string
+        public function register_user(string $username, string $password, string $confirm_password): string
         {
             // Prepares a statement to check if user is registered
             $check_user_exists_stmt = $this->db->prepare("SELECT * FROM users WHERE username=(?)");
@@ -18,16 +18,20 @@
             // Executes the statement
             $check_user_exists_stmt->execute();
 
+            // Buffers the result set so the connection is free for the next statement
+            $check_user_exists_stmt->store_result();
+
             // Checks the number of rows
-            if ($check_user_exists_stmt->num_rows() == 1) {
+            if ($check_user_exists_stmt->num_rows == 1) {
+                $check_user_exists_stmt->close();
                 return "User already exists.";
-                exit(1);
             }
+
+            $check_user_exists_stmt->close();
 
             // Checks if the passwords do not match
             if ($password !== $confirm_password) {
                 return "Passwords don't match";
-                exit(1);
             }
 
             // Hashes the password
@@ -41,6 +45,7 @@
 
             // Executes the statement
             $add_user_statement->execute();
+            $add_user_statement->close();
 
             return "";
         }
@@ -57,19 +62,22 @@
             // Executes the statement
             $find_user_statement->execute();
 
+            // Stores the result
+            $result = $find_user_statement->get_result();
+
             // Checks the number of rows
-            if ($find_user_statement->num_rows() !== 1) {
+            if ($result->num_rows !== 1) {
+                $find_user_statement->close();
                 return "Username/password do not match.";
-                exit(1);
             }
 
-            // Stores the result
-            $row = $find_user_statement->get_result()->fetch_assoc();
+            // Fetches the row
+            $row = $result->fetch_assoc();
+            $find_user_statement->close();
 
             // Verifies the password
             if (!password_verify($password, $row["password_hash"])) {
                 return "Username/password do not match.";
-                exit(1);
             }
 
             // Sets the sessions

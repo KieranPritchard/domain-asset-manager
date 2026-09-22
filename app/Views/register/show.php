@@ -89,8 +89,8 @@
 
             <?php if($register_error){ ?>
                 <div>
-                    <span className="text-xs font-medium text-red-500 mt-1">
-                        <?= $register_error["error"] ?>
+                    <span class="text-xs font-medium text-red-500 mt-1">
+                        <?= htmlspecialchars($register_error) ?>
                     </span>
                 </div>
             <?php } ?>

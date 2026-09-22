@@ -74,8 +74,8 @@
 
             <?php if($login_error){ ?>
                 <div>
-                    <span className="text-xs font-medium text-red-500 mt-1">
-                        <?= $login_error["error"] ?>
+                    <span class="text-xs font-medium text-red-500 mt-1">
+                        <?= htmlspecialchars($login_error) ?>
                     </span>
                 </div>
             <?php } ?>
@@ -87,7 +87,7 @@
                 onsubmit="handleLoginSubmit()"
                 class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors cursor-pointer"
             >
-                Submit Files
+                Login
             </button>
 
             <!-- Allows the user to go and create an account -->

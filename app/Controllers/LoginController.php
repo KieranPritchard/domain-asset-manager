@@ -18,6 +18,7 @@
             // Checks if there is an error
             if ($error) {
                 $this->show(["error" => $error]);
+                return;
             }
 
             // Redirects the user
