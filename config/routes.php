@@ -3,7 +3,7 @@
     $router = new Core\Router();
 
     // Root for first entry
-    $router->get("/", "HomeController@index");
+    $router->get("/", "IndexController@index");
 
     // Login page controllers
     $router->get("/login", "LoginController@show");
@@ -12,4 +12,7 @@
     // Handles the register routes
     $router->get("/signup", "RegisterController@show");
     $router->post("/signup", "RegisterController@register_user");
+
+    // Handles the home page functions
+    $router->get("/home", "HomeController@show")
 ?>
