@@ -257,6 +257,9 @@
   .min-h-screen {
     min-height: 100vh;
   }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
+  }
   .w-64 {
     width: calc(var(--spacing) * 64);
   }
@@ -340,6 +343,9 @@
   .border-t {
     border-top-style: var(--tw-border-style);
     border-top-width: 1px;
+  }
+  .border-emerald-900 {
+    border-color: var(--color-emerald-900);
   }
   .border-emerald-900\/80 {
     border-color: color-mix(in srgb, oklch(37.8% 0.077 168.94) 80%, transparent);
