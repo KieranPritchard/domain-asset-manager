@@ -51,9 +51,13 @@
     --default-mono-font-family: var(--font-mono);
     --color-ocean-deep-50: oklch(95.77% 0.015 251.16);
     --color-ocean-deep-100: oklch(91.51% 0.029 249.77);
+    --color-ocean-deep-200: oklch(82.98% 0.061 250.08);
     --color-ocean-deep-300: oklch(74.55% 0.092 250.58);
     --color-ocean-deep-400: oklch(66.32% 0.123 251.43);
+    --color-ocean-deep-500: oklch(58.53% 0.154 253.21);
     --color-ocean-deep-600: oklch(49.86% 0.128 253.01);
+    --color-ocean-deep-700: oklch(40.83% 0.102 252.80);
+    --color-ocean-deep-800: oklch(31.28% 0.074 252.44);
     --color-ocean-deep-900: oklch(20.93% 0.040 251.54);
     --color-ocean-deep-950: oklch(17.46% 0.032 252.52);
   }
@@ -363,6 +367,18 @@
       border-color: color-mix(in oklab, var(--color-emerald-900) 80%, transparent);
     }
   }
+  .border-ocean-deep-100 {
+    border-color: var(--color-ocean-deep-100);
+  }
+  .border-ocean-deep-200 {
+    border-color: var(--color-ocean-deep-200);
+  }
+  .border-ocean-deep-200\/80 {
+    border-color: color-mix(in srgb, oklch(82.98% 0.061 250.08) 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-ocean-deep-200) 80%, transparent);
+    }
+  }
   .border-ocean-deep-900 {
     border-color: var(--color-ocean-deep-900);
   }
@@ -398,6 +414,12 @@
   }
   .bg-indigo-600 {
     background-color: var(--color-indigo-600);
+  }
+  .bg-ocean-deep-50 {
+    background-color: var(--color-ocean-deep-50);
+  }
+  .bg-ocean-deep-100 {
+    background-color: var(--color-ocean-deep-100);
   }
   .bg-ocean-deep-400 {
     background-color: var(--color-ocean-deep-400);
@@ -523,6 +545,21 @@
       color: color-mix(in oklab, var(--color-ocean-deep-300) 80%, transparent);
     }
   }
+  .text-ocean-deep-500 {
+    color: var(--color-ocean-deep-500);
+  }
+  .text-ocean-deep-600 {
+    color: var(--color-ocean-deep-600);
+  }
+  .text-ocean-deep-700 {
+    color: var(--color-ocean-deep-700);
+  }
+  .text-ocean-deep-800 {
+    color: var(--color-ocean-deep-800);
+  }
+  .text-ocean-deep-900 {
+    color: var(--color-ocean-deep-900);
+  }
   .text-ocean-deep-950 {
     color: var(--color-ocean-deep-950);
   }
@@ -617,6 +654,9 @@
     .hover\:bg-indigo-700:hover {
       background-color: var(--color-indigo-700);
     }
+    .hover\:bg-ocean-deep-700:hover {
+      background-color: var(--color-ocean-deep-700);
+    }
     .hover\:bg-ocean-deep-900:hover {
       background-color: var(--color-ocean-deep-900);
     }
@@ -653,6 +693,9 @@
     .hover\:text-ocean-deep-100:hover {
       color: var(--color-ocean-deep-100);
     }
+    .hover\:text-ocean-deep-700:hover {
+      color: var(--color-ocean-deep-700);
+    }
     .hover\:text-red-400:hover {
       color: var(--color-red-400);
     }
@@ -666,6 +709,9 @@
   }
   .focus\:ring-indigo-500:focus {
     --tw-ring-color: var(--color-indigo-500);
+  }
+  .focus\:ring-ocean-deep-500:focus {
+    --tw-ring-color: var(--color-ocean-deep-500);
   }
   .focus\:ring-offset-2:focus {
     --tw-ring-offset-width: 2px;

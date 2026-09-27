@@ -11,12 +11,12 @@
     <title>Domain Inventory Dashboard | Login</title>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
-<body class="min-h-screen flex flex-col justify-center items-center bg-slate-50 px-4 py-12">
+<body class="min-h-screen flex flex-col justify-center items-center bg-ocean-deep-50 px-4 py-12">
     <!-- Stores the login form -->
-    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-sm border border-slate-200/80">
+    <div class="w-full max-w-md bg-white p-8 rounded-xl shadow-sm border border-ocean-deep-200/80">
         <div class="mb-6">
-            <h2 class="text-xl font-bold text-slate-800">Login</h2>
-            <p class="text-sm text-slate-500 mt-1">Please sign in below</p>
+            <h2 class="text-xl font-bold text-ocean-deep-800">Login</h2>
+            <p class="text-sm text-ocean-deep-500 mt-1">Please sign in below</p>
         </div>
 
         <!-- Form to collect the user input -->
@@ -24,7 +24,7 @@
             <div class="space-y-3">
                 <div>
                     <div class="flex flex-col space-y-1.5 mb-4">
-                        <label for="username" class="text-sm font-medium text-slate-700">
+                        <label for="username" class="text-sm font-medium text-ocean-deep-700">
                             Username
                         </label>
                         <input 
@@ -34,7 +34,7 @@
                             id="usernameField"
                             type="text"
                             placeholder="Enter your username"
-                            class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
+                            class="w-full px-3 py-2 text-sm text-ocean-deep-900 bg-white border rounded-lg outline-none transition-all duration-150"
                         >
                     </div>
                     <!-- Stores the error box -->
@@ -46,7 +46,7 @@
                 <!-- Stores the password -->
                 <div>
                     <div class="flex flex-col space-y-1.5 mb-4">
-                        <label for="password" class="text-sm font-medium text-slate-700">
+                        <label for="password" class="text-sm font-medium text-ocean-deep-700">
                             Password
                         </label>
                         <input 
@@ -56,7 +56,7 @@
                             type="password"
                             id="passwordField"
                             placeholder="Enter your password"
-                            class="w-full px-3 py-2 text-sm text-slate-900 bg-white border rounded-lg outline-none transition-all duration-150"
+                            class="w-full px-3 py-2 text-sm text-ocean-deep-900 bg-white border rounded-lg outline-none transition-all duration-150"
                         >
                     </div>
                     <!-- Forget password link -->
@@ -64,7 +64,7 @@
                         <span id="passwordError" class="hidden text-xs font-semibold text-red-600"></span>
                         <a 
                             href=""
-                            class="text-xs font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors"
+                            class="text-xs font-semibold text-ocean-deep-600 hover:text-ocean-deep-700 hover:underline transition-colors"
                         >
                             Forgot password?
                         </a>
@@ -85,14 +85,14 @@
                 type="submit"
                 id="submitBtn"
                 onsubmit="handleLoginSubmit()"
-                class="w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors cursor-pointer"
+                class="w-full py-2.5 px-4 bg-ocean-deep-600 hover:bg-ocean-deep-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-ocean-deep-500 focus:ring-offset-2 transition-colors cursor-pointer"
             >
                 Login
             </button>
 
             <!-- Allows the user to go and create an account -->
-            <p class="text-center text-sm text-slate-600 pt-3 border-t border-slate-100">
-                Don't have an account? <a href="/signup" class="font-semibold text-emerald-600 hover:text-emerald-700 hover:underline transition-colors">Create account</a>
+            <p class="text-center text-sm text-ocean-deep-600 pt-3 border-t border-ocean-deep-100">
+                Don't have an account? <a href="/signup" class="font-semibold text-ocean-deep-600 hover:text-ocean-deep-700 hover:underline transition-colors">Create account</a>
             </p>
         </form>
     </div>
