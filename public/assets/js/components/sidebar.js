@@ -11,7 +11,7 @@
         sidebar.classList.toggle('w-20', collapsed);
         sidebar.classList.toggle('w-64', !collapsed);
         header.classList.toggle('hidden', collapsed);
-        divider.classList.toggle('border-t', collapsed)
+        divider.classList.toggle('border-t', !collapsed)
         labels.forEach(function (el) {
             el.classList.toggle('hidden', collapsed);
         });
