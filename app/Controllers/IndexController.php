@@ -5,7 +5,7 @@
     use App\Models\Auth;
     use Core\Database;
 
-    class HomeController extends Controller
+    class IndexController extends Controller
     {
         // Private method to build the database on first run
         private function build_db() {

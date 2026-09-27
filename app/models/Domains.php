@@ -6,6 +6,24 @@
     // Modals Class
     class Domains extends Model
     {
+        // Method to get the domains
+        public function get_domains(int $id):string | array
+        {
+            // Prepares a statement to get the domains
+            $get_user_domains = $this->db->prepare("SELECT * FROM domains WHERE user_id = (?)");
+
+            $get_user_domains->bind_param("i", $id);
+
+            // Executes the statement
+            $get_user_domains->execute();
+
+            // Stores the result
+            $domains = $get_user_domains->get_result();
+
+            $get_user_domains->close();
+
+            return $domains
+        }
         // Method to add domain
         public function add_domain(string $domain_name, string $registar, int $user_id):string
         {
@@ -36,6 +54,40 @@
             // Executes and closes
             $add_domain->execute();
             $add_domain->close();
+
+            return "";
+        }
+
+        // Method to update domain
+        public function update_domain(int $domain_id, string $domain_name, string $registar):string
+        {
+            // Statement to update the domain entry
+            $domain_update = $this->db->prepare("UPDATE domains SET name=(?) registrar=(?) WHERE id=(?)");
+
+            // Binds the parameters
+            $domain_update->bind_param("sss", $domain_name, $registar, $domain_id);
+
+            // Executes the statement
+            $domain_update->execute();
+
+            $domain_update->close();
+
+            return "";
+        }
+
+        // Method to delete the domain
+        public function delete_domain(int $domain_id):string
+        {
+            // Statement to update the domain entry
+            $domain_update = $this->db->prepare("DELETE FROM domains WHERE id=(?)");
+
+            // Binds the parameters
+            $domain_update->bind_param("i", $domain_id);
+
+            // Executes the statement
+            $domain_update->execute();
+
+            $domain_update->close();
 
             return "";
         }
