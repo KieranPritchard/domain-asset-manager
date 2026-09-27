@@ -13,8 +13,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Domain Inventory Dashboard | Login</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
 </head>
-<body class="min-h-screen flex items-center justify-center px-4 py-12">
+<body class="min-h-screen flex">
     <?php renderSidebar($site_links, "Home"); ?>
+    
+    <div class="flex-1 flex flex-col items-center bg-slate-50 px-4 py-12">
+
+    </div>
+    <!-- Javascript links -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        lucide.createIcons()
+    </script>
+    <script src="/assets/js/components/sidebar.js"></script>
+    
 </body>
 </html>
