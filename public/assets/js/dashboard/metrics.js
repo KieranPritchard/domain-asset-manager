@@ -6,3 +6,18 @@ async function getDomainsData(){
     // Returns the response
     return response.body
 }
+
+// Function to display the total domains
+async function totalDomains(){
+    // Stores the field for the domains
+    const totalDomainsField = document.getElementById("totalDomains")
+
+    // Gets the domains data
+    const domains = await getDomainsData()
+
+    // Stores the number of domains
+    const numOfDomains = domains.length
+
+    // Sets the number of total domains
+    totalDomainsField.innerHTML = numOfDomains
+}
