@@ -24,9 +24,15 @@
             <!-- Grid for the dashboard -->
             <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
                 <!-- Displays the metrics on the page -->
+                <?php include __DIR__ . "/../components/dashboard/metrics/total_domains.php" ?>
+                <?php include __DIR__ . "/../components/dashboard/metrics/total_subdomains.php" ?>
+                <?php include __DIR__ . "/../components/dashboard/metrics/total_records.php" ?>
+                <?php include __DIR__ . "/../components/dashboard/metrics/active_domains.php" ?>
+                <?php include __DIR__ . "/../components/dashboard/metrics/inactive_domains.php" ?>
             </div>
         </div>
     </div>
+
     <!-- Javascript links -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <script>
