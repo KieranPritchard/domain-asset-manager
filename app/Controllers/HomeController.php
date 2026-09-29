@@ -14,6 +14,15 @@
             return $user_domains;
         }
 
+        // Method to send to javascript
+        public function send_to_js():string {
+            // Stores the user domains
+            $domains = $this->fetch_domains();
+
+            // Returns the encoded data
+            return json_encode($domains);
+        }
+
         public function show(array $params = []):void
         {
             // Stores the user domains

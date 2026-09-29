@@ -14,5 +14,6 @@
     $router->post("/signup", "RegisterController@register_user");
 
     // Handles the home page functions
-    $router->get("/home", "HomeController@show")
+    $router->get("/home", "HomeController@show");
+    $router->get("/home/json", "HomeController@send_to_js");
 ?>
