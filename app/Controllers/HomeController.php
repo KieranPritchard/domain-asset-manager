@@ -8,14 +8,22 @@
     class HomeController extends Controller
     {
         // Method to fetch the users from the database
-        private function fetch_domains():array {
+        private function fetch_domains():array 
+        {
             $user_domains = (new Domains)->get_domains($_SESSION["id"]);
 
             return $user_domains;
         }
 
+        // Method to fetch the subdomains
+        private function fetch_subdomains():string
+        {
+            return "";
+        }
+
         // Method to send to javascript
-        public function send_to_js():string {
+        public function domains():string 
+        {
             // Stores the user domains
             $domains = $this->fetch_domains();
 
