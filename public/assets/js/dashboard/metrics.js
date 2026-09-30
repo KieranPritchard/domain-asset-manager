@@ -1,10 +1,32 @@
-// Function to fetch data
+// Functions to fetch data
 async function getDomainsData(){
     // Stores the response
-    const response = await fetch("/home/json");
+    const response = await fetch("/home/domains");
 
-    // Returns the response
-    return response.body
+    // Stores the data
+    const data = JSON.parse(response.body)
+
+    return data
+}
+
+async function getSubdomainsData(){
+    // Stores the response
+    const response = await fetch("/home/subdomains");
+
+    // Stores the data
+    const data = JSON.parse(response.body)
+
+    return data
+}
+
+async function getRecordsData(){
+    // Stores the response
+    const response = await fetch("/home/subdomains");
+
+    // Stores the data
+    const data = JSON.parse(response.body)
+
+    return data
 }
 
 // Function to display the total domains
@@ -28,7 +50,7 @@ async function totalSubdomains(){
     const totalSubdomainsField = document.getElementById("totalSubdomains")
 
     // Gets the domains data
-    const domains = await getDomainsData()
+    const domains = await getSubdomainsData()
 
     // Filters the subdomains
 
