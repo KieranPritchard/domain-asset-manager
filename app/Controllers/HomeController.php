@@ -5,6 +5,7 @@
     use App\Models\Auth;
     use App\Models\Subdomains;
     use App\Models\Domains;
+use App\Models\Records;
 
     class HomeController extends Controller
     {
@@ -17,7 +18,7 @@
         }
 
         // Method to fetch the subdomains
-        private function fetch_subdomains():string
+        private function fetch_subdomains():array
         {
             // Stores the domain ids
             $ids = [];
@@ -36,6 +37,26 @@
             return $user_subdomains;
         }
 
+        // Method to fetch the subdomains
+        private function fetch_records():array
+        {
+            // Stores the domain ids
+            $ids = [];
+
+            // Stores the user domains
+            $subdomains = $this->fetch_subdomains();
+
+            // Loops over the domains
+            foreach ($subdomains as $subdomain) {
+                // Adds the domain id to ids
+                array_push($ids, $subdomain["id"]);
+            }
+
+            $user_records = (new Records)->get_records($ids);
+
+            return $user_records;
+        }
+
         // Method to send to javascript
         public function domains():string 
         {
@@ -44,6 +65,24 @@
 
             // Returns the encoded data
             return json_encode($domains);
+        }
+
+        public function subdomains():string 
+        {
+            // Stores the user domains
+            $subdomains = $this->fetch_subdomains();
+
+            // Returns the encoded data
+            return json_encode($subdomains);
+        }
+
+        public function records():string 
+        {
+            // Stores the user domains
+            $records = $this->fetch_records();
+
+            // Returns the encoded data
+            return json_encode($records);
         }
 
         public function show(array $params = []):void
