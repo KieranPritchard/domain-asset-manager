@@ -60,3 +60,7 @@ async function totalSubdomains(){
     // Sets the number of total domains
     totalSubdomainsField.innerHTML = numOfDomains
 }
+
+// Calls the total function
+totalDomains()
+totalSubdomains()
