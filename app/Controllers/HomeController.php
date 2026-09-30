@@ -3,6 +3,7 @@
 
     use Core\Controller;
     use App\Models\Auth;
+    use App\Models\Subdomains;
     use App\Models\Domains;
 
     class HomeController extends Controller
@@ -18,7 +19,21 @@
         // Method to fetch the subdomains
         private function fetch_subdomains():string
         {
-            return "";
+            // Stores the domain ids
+            $ids = [];
+
+            // Stores the user domains
+            $domains = $this->fetch_domains();
+
+            // Loops over the domains
+            foreach ($domains as $domain) {
+                // Adds the domain id to ids
+                array_push($ids, $domain["id"]);
+            }
+
+            $user_subdomains = (new Subdomains)->get_subdomains($ids);
+
+            return $user_subdomains;
         }
 
         // Method to send to javascript

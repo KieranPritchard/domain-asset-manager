@@ -6,28 +6,38 @@
     // Modals Class
     class Subdomains extends Model
     {
-        // Method to get the domains
-        public function get_subdomains(int $id): string|array
+        // Method to get the subdomains for a list of domains
+        public function get_subdomains(array $domain_ids): string|array
         {
             try {
-                // Prepares a statement to get the domains
-                $get_user_subdomains = $this->db->prepare("SELECT * FROM subdomains WHERE user_id = ?");
+                // Nothing to look up, and "IN ()" is invalid SQL
+                if (empty($domain_ids)) {
+                    return [];
+                }
 
-                $get_user_subdomains->bind_param("i", $id);
+                // Builds one placeholder per id, e.g. "?,?,?"
+                $placeholders = implode(",", array_fill(0, count($domain_ids), "?"));
+
+                // Prepares a statement to get the subdomains
+                $get_subdomains = $this->db->prepare("SELECT * FROM subdomains WHERE domain_id IN ($placeholders)");
+
+                // Binds every id as an integer
+                $types = str_repeat("i", count($domain_ids));
+                $get_subdomains->bind_param($types, ...array_map("intval", $domain_ids));
 
                 // Executes the statement
-                $get_user_subdomains->execute();
+                $get_subdomains->execute();
 
                 // Stores the result
-                $result = $get_user_subdomains->get_result();
+                $result = $get_subdomains->get_result();
 
                 // Fetches all rows as an associative array
-                $domains = $result->fetch_all(MYSQLI_ASSOC);
+                $subdomains = $result->fetch_all(MYSQLI_ASSOC);
 
-                // Closes the statement and returns the domains
-                $get_user_subdomains->close();
+                // Closes the statement and returns the subdomains
+                $get_subdomains->close();
 
-                return $domains;
+                return $subdomains;
             } catch (\Throwable $err) {
                 // Returns an error
                 return (string) $err;
