@@ -1,0 +1,80 @@
+<?php 
+    // Brings in the sidebar and links
+    require __DIR__ . "/../components/sidebar.php";
+    require __DIR__ . "/../../../config/links.php";
+
+    // Guards against unset errors
+    $domains = $data["domains"] ?? null;
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domain Inventory Dashboard | Domains</title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+</head>
+<body class="min-h-screen flex bg-ocean-deep-50">
+    <?php renderSidebar($site_links, "Domains"); ?>
+
+    <main class="flex-1 min-w-0 px-4 py-8 md:px-8">
+        <!-- Container for the dashboard -->
+        <div class="w-full max-w-6xl mx-auto">
+            <!-- Flexbox for the table -->
+            <div class="overflow-x-auto rounded-lg border border-ocean-deep-200 bg-white shadow-sm">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-ocean-deep-100 text-xs uppercase tracking-wider text-ocean-deep-700">
+                        <tr>
+                            <th scope="col" class="px-4 py-3 font-medium">Domain</th>
+                            <th scope="col" class="px-4 py-3 font-medium">Status</th>
+                            <th scope="col" class="px-4 py-3 font-medium">Registrar</th>
+                            <th scope="col" class="px-4 py-3 text-right font-medium">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-ocean-deep-100 text-ocean-deep-800">
+                        <?php if (!empty($domains)): ?>
+                            <?php foreach ($domains as $domain): ?>
+                                <tr class="transition-colors hover:bg-ocean-deep-50">
+                                    <td class="whitespace-nowrap px-4 py-3 font-medium text-ocean-deep-950">
+                                        <?= htmlspecialchars($domain["name"] ?? "") ?>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <span class="inline-flex items-center rounded-full bg-ocean-deep-100 px-2 py-0.5 text-xs font-medium text-ocean-deep-700 ring-1 ring-inset ring-ocean-deep-300/60">
+                                            <?= htmlspecialchars($domain["status"] ?? "Unknown") ?>
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <?= htmlspecialchars($domain["registrar"] ?? "-") ?>
+                                    </td>
+                                    <td class="px-4 py-3 text-right">
+                                        <a 
+                                            href="/domains/edit?id=<?= urlencode($domain["id"] ?? "") ?>"
+                                            class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
+                                        >
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4" class="px-4 py-8 text-center text-ocean-deep-400">
+                                    No domains found.
+                                </td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>
+        lucide.createIcons()
+    </script>
+    <script src="/assets/js/components/sidebar.js"></script>
+</body>
+</html>
