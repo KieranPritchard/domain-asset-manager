@@ -67,6 +67,17 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Placeholder button, to be wired up later -->
+            <div class="mt-4 w-full">
+                <button 
+                    type="button" 
+                    id="table-action-btn"
+                    class="inline-flex w-full items-center justify-center rounded-lg bg-ocean-deep-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-ocean-deep-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean-deep-400 focus-visible:ring-offset-2"
+                >
+                    Add Domain
+                </button>
+            </div>
         </div>
     </main>
 
