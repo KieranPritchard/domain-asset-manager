@@ -34,6 +34,25 @@
             }
         }
 
+        // Method to prepare and create domain from model
+        public function update_domain():void
+        {
+            // Stores the domain details
+            $domain_name = htmlspecialchars(trim($_POST["name"]));
+            $registar = htmlspecialchars(trim($_POST["registar"]));
+            $id = $_SESSION["id"];
+
+            // Stores the feedback from the model
+            $feedback = (new Domains)->update_domain($id, $domain_name, $registar);
+
+            // Checks if there is any feedback
+            if (!$feedback) {
+                $this->show(["feedback" => "Domain created successfully"]);
+            } else {
+                $this->show(["feedback" => $feedback]);
+            }
+        }
+
         // Method to show the view
         public function show(array $params = []):void
         {
