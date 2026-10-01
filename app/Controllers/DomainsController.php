@@ -40,14 +40,30 @@
             // Stores the domain details
             $domain_name = htmlspecialchars(trim($_POST["name"]));
             $registar = htmlspecialchars(trim($_POST["registar"]));
-            $id = $_SESSION["id"];
+            $id = htmlspecialchars(trim($_POST["id"]));
 
             // Stores the feedback from the model
             $feedback = (new Domains)->update_domain($id, $domain_name, $registar);
 
             // Checks if there is any feedback
             if (!$feedback) {
-                $this->show(["feedback" => "Domain created successfully"]);
+                $this->show(["feedback" => "Domain updated successfully"]);
+            } else {
+                $this->show(["feedback" => $feedback]);
+            }
+        }
+
+        public function delete():void
+        {
+            // Stores the domain details
+            $id = htmlspecialchars(trim($_POST["id"]));
+
+            // Stores the feedback from the model
+            $feedback = (new Domains)->delete_domain($id);
+
+            // Checks if there is any feedback
+            if (!$feedback) {
+                $this->show(["feedback" => "Domain deleted successfully"]);
             } else {
                 $this->show(["feedback" => $feedback]);
             }
