@@ -16,7 +16,7 @@
         }
 
         // Method to prepare and create domain from model
-        public function create_domain():void
+        public function create():void
         {
             // Stores the domain details
             $domain_name = htmlspecialchars(trim($_POST["name"]));
@@ -35,7 +35,7 @@
         }
 
         // Method to prepare and create domain from model
-        public function update_domain():void
+        public function update():void
         {
             // Stores the domain details
             $domain_name = htmlspecialchars(trim($_POST["name"]));
