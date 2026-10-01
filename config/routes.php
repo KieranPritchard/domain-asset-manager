@@ -18,4 +18,7 @@
     $router->get("/home/domains", "HomeController@domains");
     $router->get("/home/subdomains", "HomeController@subdomains");
     $router->get("/home/records", "HomeController@records");
+
+    // Handles the domains
+    $router->get("/domains", "DomainsController@show");
 ?>
