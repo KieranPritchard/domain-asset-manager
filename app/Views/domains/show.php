@@ -1,6 +1,6 @@
 <?php 
     // Brings in the sidebar and links
-    require __DIR__ . "/../components/sidebar.php";
+    require __DIR__ . "/../components/ui/sidebar.php";
     require __DIR__ . "/../../../config/links.php";
 
     // Guards against unset errors
