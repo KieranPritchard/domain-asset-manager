@@ -26,9 +26,11 @@
                 <table class="w-full text-left text-sm">
                     <thead class="bg-ocean-deep-100 text-xs uppercase tracking-wider text-ocean-deep-700">
                         <tr>
+                            <th scope="col" class="px-4 py-3 font-medium">ID</th>
                             <th scope="col" class="px-4 py-3 font-medium">Domain</th>
-                            <th scope="col" class="px-4 py-3 font-medium">Status</th>
                             <th scope="col" class="px-4 py-3 font-medium">Registrar</th>
+                            <th scope="col" class="px-4 py-3 font-medium">Created At</th>
+                            <th scope="col" class="px-4 py-3 font-medium">Updated At</th>
                             <th scope="col" class="px-4 py-3 text-right font-medium">Actions</th>
                         </tr>
                     </thead>
@@ -37,15 +39,19 @@
                             <?php foreach ($domains as $domain): ?>
                                 <tr class="transition-colors hover:bg-ocean-deep-50">
                                     <td class="whitespace-nowrap px-4 py-3 font-medium text-ocean-deep-950">
+                                        <?= htmlspecialchars($domain["id"] ?? "") ?>
+                                    </td>
+                                    <td class="whitespace-nowrap px-4 py-3 font-medium text-ocean-deep-950">
                                         <?= htmlspecialchars($domain["name"] ?? "") ?>
                                     </td>
                                     <td class="px-4 py-3">
-                                        <span class="inline-flex items-center rounded-full bg-ocean-deep-100 px-2 py-0.5 text-xs font-medium text-ocean-deep-700 ring-1 ring-inset ring-ocean-deep-300/60">
-                                            <?= htmlspecialchars($domain["status"] ?? "Unknown") ?>
-                                        </span>
+                                        <?= htmlspecialchars($domain["registrar"] ?? "-") ?>
                                     </td>
                                     <td class="px-4 py-3">
-                                        <?= htmlspecialchars($domain["registrar"] ?? "-") ?>
+                                        <?= htmlspecialchars($domain["created_at"] ?? "-") ?>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <?= htmlspecialchars($domain["updated_at"] ?? "-") ?>
                                     </td>
                                     <td class="px-4 py-3 text-right">
                                         <a 
@@ -59,7 +65,7 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="4" class="px-4 py-8 text-center text-ocean-deep-400">
+                                <td colspan="6" class="px-4 py-8 text-center text-ocean-deep-400">
                                     No domains found.
                                 </td>
                             </tr>
