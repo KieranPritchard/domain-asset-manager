@@ -54,12 +54,18 @@
                                         <?= htmlspecialchars($domain["updated_at"] ?? "-") ?>
                                     </td>
                                     <td class="px-4 py-3 text-right">
-                                        <a 
-                                            href="/domains/edit?id=<?= urlencode($domain["id"] ?? "") ?>"
+                                        <button
+                                            onclick="openModal('editDomainModal')"
                                             class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
                                         >
-                                            Edit
-                                        </a>
+                                            <i width="20" height="20" class="shrink-0" data-lucide="square-pen"></i>
+                                        </button>
+                                        <button
+                                            onclick="openModal('deleteDomainModal')"
+                                            class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
+                                        >
+                                            <i width="20" height="20" class="shrink-0" data-lucide="bin"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -78,7 +84,7 @@
             <div class="mt-4 w-full">
                 <button 
                     type="button" 
-                    id="table-action-btn"
+                    onclick="openModal('addDomainModal')"
                     class="inline-flex w-full items-center justify-center rounded-lg bg-ocean-deep-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-ocean-deep-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean-deep-400 focus-visible:ring-offset-2"
                 >
                     Add Domain
@@ -93,5 +99,6 @@
         lucide.createIcons()
     </script>
     <script src="/assets/js/components/sidebar.js"></script>
+    <script src="/assets/js/components/modal.js"></script>
 </body>
 </html>
