@@ -2,9 +2,11 @@
     // Brings in the sidebar and links
     require __DIR__ . "/../components/ui/sidebar.php";
     require __DIR__ . "/../../../config/links.php";
+    require __DIR__ . "/../components/ui/modal.php";
 
     // Guards against unset errors
     $domains = $data["domains"] ?? null;
+    $feedback = $data["feedback"] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -96,7 +98,7 @@
         <?php 
             // Stores the add domain modal content
             $add_domain_content = "
-                <form action='' method='post' class='space-y-4'>
+                <form action='/domains/create' method='post' class='space-y-4'>
                     <!-- Container for the form details -->
                     <div class='space-y-3'>
                         <!-- Name field -->
@@ -148,7 +150,7 @@
                         <button
                             id=\"cancelBtn\"
                             onClick=\"closeModal('addDomainModal')\"
-                            class='w-full p-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition-colors cursor-pointer'
+                            class='w-full p-2 border border-ocean-deep-600 text-ocean-deep-600 hover:bg-ocean-deep-600/60 rounded-lg transition-colors cursor-pointer'
                         >
                             Cancel
                         </button>
@@ -156,9 +158,9 @@
                             id=\"submitBtn\"
                             type='submit'
                             onClick=\"closeModal('addDomainModal')\"
-                            class='w-full p-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition-colors cursor-pointer'
+                            class='w-full p-2 bg-ocean-deep-600 text-white hover:bg-ocean-deep-700 rounded-lg transition-colors cursor-pointer'
                         >
-                            Cancel
+                            Submit
                         </button>
                     </div>
                 </form>

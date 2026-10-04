@@ -21,4 +21,5 @@
 
     // Handles the domains
     $router->get("/domains", "DomainsController@show");
+    $router->post("/domains/create", "DomainsController@create");
 ?>

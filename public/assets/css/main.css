@@ -436,6 +436,9 @@
     border-top-style: var(--tw-border-style);
     border-top-width: 1px;
   }
+  .border-indigo-600 {
+    border-color: var(--color-indigo-600);
+  }
   .border-ocean-deep-100 {
     border-color: var(--color-ocean-deep-100);
   }
@@ -447,6 +450,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, var(--color-ocean-deep-200) 80%, transparent);
     }
+  }
+  .border-ocean-deep-600 {
+    border-color: var(--color-ocean-deep-600);
   }
   .border-ocean-deep-900 {
     border-color: var(--color-ocean-deep-900);
@@ -480,6 +486,9 @@
     @supports (color: color-mix(in lab, red, red)) {
       background-color: color-mix(in oklab, var(--color-amber-500) 10%, transparent);
     }
+  }
+  .bg-black {
+    background-color: var(--color-black);
   }
   .bg-black\/50 {
     background-color: color-mix(in srgb, #000 50%, transparent);
@@ -771,6 +780,10 @@
     -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
     backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }
+  .backdrop-filter {
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
   .transition-all {
     transition-property: all;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -816,8 +829,32 @@
     .hover\:bg-ocean-deep-50:hover {
       background-color: var(--color-ocean-deep-50);
     }
+    .hover\:bg-ocean-deep-600\/60:hover {
+      background-color: color-mix(in srgb, oklch(49.86% 0.128 253.01) 60%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-ocean-deep-600\/60:hover {
+        background-color: color-mix(in oklab, var(--color-ocean-deep-600) 60%, transparent);
+      }
+    }
+    .hover\:bg-ocean-deep-600\/80:hover {
+      background-color: color-mix(in srgb, oklch(49.86% 0.128 253.01) 80%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-ocean-deep-600\/80:hover {
+        background-color: color-mix(in oklab, var(--color-ocean-deep-600) 80%, transparent);
+      }
+    }
     .hover\:bg-ocean-deep-700:hover {
       background-color: var(--color-ocean-deep-700);
+    }
+    .hover\:bg-ocean-deep-700\/80:hover {
+      background-color: color-mix(in srgb, oklch(40.83% 0.102 252.80) 80%, transparent);
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .hover\:bg-ocean-deep-700\/80:hover {
+        background-color: color-mix(in oklab, var(--color-ocean-deep-700) 80%, transparent);
+      }
     }
     .hover\:bg-ocean-deep-900\/50:hover {
       background-color: color-mix(in srgb, oklch(20.93% 0.040 251.54) 50%, transparent);
