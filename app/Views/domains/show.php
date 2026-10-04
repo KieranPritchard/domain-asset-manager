@@ -163,6 +163,12 @@
                     </div>
                 </form>
             ";
+
+            renderModal(
+                "addDomainModal", 
+                "Create New Domain",
+                $add_domain_content
+            )
         ?>
     </main>
 
