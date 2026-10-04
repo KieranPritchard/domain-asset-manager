@@ -1,30 +1,14 @@
-// Function to handle the button submit
-function handleLoginSubmit() {
-    // Stores the submit button
-    const submitButton = document.getElementById("submitBtn")
-
-    // Adds the disabled attribute to the button
-    submitButton.setAttribute("disabled", "")
-
-    // Removes the curser pointer and adds the disabled one
-    submitButton.classList.remove("cursor-pointer")
-    submitButton.classList.add("cursor-progress")
-
-    // Sets the text to submitting
-    submitButton.innerHTML = "Submitting..."
-}
-
-// Function to validate the username
-function validateUsernameField(){
+// Function to validate the domain Name
+function validateDomainName(){
     // Stores the fields needed
     const submitButton = document.getElementById("submitBtn")
-    const usernameField = document.getElementById("usernameField").value
-    const usernameError = document.getElementById("usernameError")
+    const domainNameField = document.getElementById("domainNameField").value
+    const domainNameError = document.getElementById("domainNameError")
 
     // Performs a length check
-    if (usernameField.length === 0) {
-        usernameError.innerText = "Please enter a username"
-        usernameError.classList.remove("hidden")
+    if (domainNameField.length === 0) {
+        domainNameError.innerText = "Please enter a username"
+        domainNameError.classList.remove("hidden")
 
         // Adds the disabled attribute to the button
         submitButton.setAttribute("disabled", "")
@@ -41,17 +25,17 @@ function validateUsernameField(){
     }
 }
 
-// Function to validate the username
-function validatePasswordField(){
+// Function to validate the registar
+function validateRegistarName(){
     // Stores the fields needed
     const submitButton = document.getElementById("submitBtn")
-    const passwordField = document.getElementById("passwordField").value
-    const passwordError = document.getElementById("passwordError")
+    const registarField = document.getElementById("registarField").value
+    const registarError = document.getElementById("registarField")
 
     // Performs a length check
-    if (passwordField.length < 0) {
-        passwordError.innerText = "Passwords must be not be empty"
-        passwordError.classList.remove("hidden")
+    if (registarField.length === 0) {
+        registarError.innerText = "Please enter a username"
+        registarError.classList.remove("hidden")
 
         // Adds the disabled attribute to the button
         submitButton.setAttribute("disabled", "")
@@ -61,7 +45,7 @@ function validatePasswordField(){
         submitButton.classList.add("cursor-not-allowed")
     } else {
         // Resets everything
-        passwordError.classList.add("hidden")
+        registarError.classList.add("hidden")
         submitButton.removeAttribute("disabled")
         submitButton.classList.add("cursor-pointer")
         submitButton.classList.remove("cursor-not-allowed")

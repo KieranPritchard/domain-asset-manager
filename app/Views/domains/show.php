@@ -181,5 +181,6 @@
     </script>
     <script src="/assets/js/components/sidebar.js"></script>
     <script src="/assets/js/components/modal.js"></script>
+    <script src="/assets/js/forms/add_domain/addDomain.js"></script>
 </body>
 </html>
