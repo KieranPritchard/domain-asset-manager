@@ -67,10 +67,13 @@
                                             <i width="20" height="20" class="shrink-0" data-lucide="square-pen"></i>
                                         </button>
                                         <button
-                                            onclick="openModal('deleteDomainModal')"
+                                            type="button"
+                                            data-id="<?= htmlspecialchars($domain["id"] ?? "") ?>"
+                                            data-name="<?= htmlspecialchars($domain["name"] ?? "") ?>"
+                                            onclick="openDeleteDomainModal(this)"
                                             class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
                                         >
-                                            <i width="20" height="20" class="shrink-0" data-lucide="bin"></i>
+                                            <i width="20" height="20" class="shrink-0" data-lucide="trash-2"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -101,6 +104,7 @@
         <!-- Renders the add domain model -->
         <?php include __DIR__ . "/partials/add_domain_modal.php"?>
         <?php include __DIR__ . "/partials/edit_domain_modal.php"?>
+        <?php include __DIR__ . "/partials/delete_domain_modal.php"?>
     </main>
 
     <!-- Scripts -->
@@ -111,6 +115,6 @@
     <script src="/assets/js/components/sidebar.js"></script>
     <script src="/assets/js/components/modal.js"></script>
     <script src="/assets/js/forms/add_domain/addDomain.js"></script>
-    <script src="/assets/js/forms/add_domain/editDomain.js"></script>
+    <script src="/assets/js/forms/edit_domain/editDomain.js"></script>
 </body>
 </html>
