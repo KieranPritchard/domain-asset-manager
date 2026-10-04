@@ -52,7 +52,7 @@
         public function update():void
         {
             // Stores the domain details
-            $domain_name = htmlspecialchars(trim($_POST["name"]));
+            $domain_name = htmlspecialchars(trim($_POST["domainName"]));
             $registar = htmlspecialchars(trim($_POST["registar"]));
             $id = htmlspecialchars(trim($_POST["id"]));
 
