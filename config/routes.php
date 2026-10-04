@@ -23,4 +23,6 @@
     $router->get("/domains", "DomainsController@show");
     $router->get("/domains/json", "DomainsController@json");
     $router->post("/domains/create", "DomainsController@create");
+    $router->post("/domains/update", "DomainsController@update");
+    $router->post("/domains/delete", "DomainsController@delete");
 ?>
