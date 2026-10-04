@@ -1,5 +1,16 @@
-// Stores a cached list of existing domains
-let existingDomains = []
+// Stores the original name so the duplicate check can ignore it
+let editingDomainName = ""
+
+// Fills the edit modal with the clicked row's data, then opens it
+function openEditDomainModal(button) {
+    document.getElementById("editDomainId").value = button.dataset.id
+    document.getElementById("editDomainNameField").value = button.dataset.name
+    document.getElementById("editRegistarField").value = button.dataset.registrar
+
+    editingDomainName = button.dataset.name.trim().toLowerCase()
+
+    openModal("editDomainModal")
+}
 
 // Loads the domains from the PHP endpoint
 async function loadDomains() {
@@ -33,14 +44,6 @@ function validateDomainName(){
         submitButton.setAttribute("disabled", "")
 
         // Removes the curser pointer and adds the disabled one
-        submitButton.classList.remove("cursor-pointer")
-        submitButton.classList.add("cursor-not-allowed")
-    } else if (existingDomains.includes(domainNameField.trim().toLowerCase())) {
-        // Duplicate check against the data from /domains/json
-        domainNameError.innerText = "This domain already exists"
-        domainNameError.classList.remove("hidden")
-
-        submitButton.setAttribute("disabled", "")
         submitButton.classList.remove("cursor-pointer")
         submitButton.classList.add("cursor-not-allowed")
     } else {

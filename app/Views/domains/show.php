@@ -57,7 +57,11 @@
                                     </td>
                                     <td class="px-4 py-3 text-right">
                                         <button
-                                            onclick="openModal('editDomainModal')"
+                                            type="button"
+                                            data-id="<?= htmlspecialchars($domain["id"] ?? "") ?>"
+                                            data-name="<?= htmlspecialchars($domain["name"] ?? "") ?>"
+                                            data-registrar="<?= htmlspecialchars($domain["registrar"] ?? "") ?>"
+                                            onclick="openEditDomainModal(this)"
                                             class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
                                         >
                                             <i width="20" height="20" class="shrink-0" data-lucide="square-pen"></i>
@@ -96,6 +100,7 @@
 
         <!-- Renders the add domain model -->
         <?php include __DIR__ . "/partials/add_domain_modal.php"?>
+        <?php include __DIR__ . "/partials/edit_domain_modal.php"?>
     </main>
 
     <!-- Scripts -->
