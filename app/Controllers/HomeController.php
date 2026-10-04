@@ -5,7 +5,7 @@
     use App\Models\Auth;
     use App\Models\Subdomains;
     use App\Models\Domains;
-use App\Models\Records;
+    use App\Models\Records;
 
     class HomeController extends Controller
     {
@@ -77,6 +77,15 @@ use App\Models\Records;
 
         public function show(array $params = []):void
         {
+            // Stores wheter the user is logged in or not
+            $loggedin = new Auth()->is_loggedin();
+
+            // Checks if the user is loggedin
+            if (!$loggedin) {
+                header("location: /home");
+                exit;
+            }
+
             // Stores the user domains
             $domains = $this->fetch_domains();
 

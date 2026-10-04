@@ -1,6 +1,7 @@
 <?php
     namespace App\Controllers;
 
+    use App\Models\Auth;
     use Core\Controller;
     use App\Models\Domains;
 
@@ -85,6 +86,15 @@
         // Method to show the view
         public function show(array $params = []):void
         {
+            // Stores wheter the user is logged in or not
+            $loggedin = new Auth()->is_loggedin();
+
+            // Checks if the user is loggedin
+            if (!$loggedin) {
+                header("location: /home");
+                exit;
+            }
+
             // Stores the login error
             $feedback = $params["feedback"] ?? null;
 
