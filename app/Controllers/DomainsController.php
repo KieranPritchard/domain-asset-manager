@@ -54,7 +54,7 @@
             // Stores the domain details
             $domain_name = htmlspecialchars(trim($_POST["domainName"]));
             $registar = htmlspecialchars(trim($_POST["registar"]));
-            $id = htmlspecialchars(trim($_POST["id"]));
+            $id = htmlspecialchars(trim($_POST["domainId"]));
 
             // Stores the feedback from the model
             $feedback = (new Domains)->update_domain($id, $domain_name, $registar);
@@ -70,7 +70,7 @@
         public function delete():void
         {
             // Stores the domain details
-            $id = htmlspecialchars(trim($_POST["id"]));
+            $id = htmlspecialchars(trim($_POST["domainId"]));
 
             // Stores the feedback from the model
             $feedback = (new Domains)->delete_domain($id);
