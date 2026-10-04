@@ -1,3 +1,22 @@
+// Stores a cached list of existing domains
+let existingDomains = []
+
+// Loads the domains from the PHP endpoint
+async function loadDomains() {
+    try {
+        const response = await fetch("/domains/json")
+        if (!response.ok) throw new Error(`HTTP ${response.status}`)
+        const data = await response.json()
+
+        // Stores just the name property of each domain, normalised for comparison
+        existingDomains = data.map(domain => domain.name.trim().toLowerCase())
+    } catch (error) {
+        console.error("Could not load domains:", error)
+        existingDomains = []
+    }
+    validateDomainName()
+}
+
 // Function to validate the domain Name
 function validateDomainName(){
     // Stores the fields needed
@@ -18,7 +37,7 @@ function validateDomainName(){
         submitButton.classList.add("cursor-not-allowed")
     } else {
         // Resets everything
-        usernameError.classList.add("hidden")
+        domainNameError.classList.add("hidden")
         submitButton.removeAttribute("disabled")
         submitButton.classList.add("cursor-pointer")
         submitButton.classList.remove("cursor-not-allowed")
@@ -51,3 +70,8 @@ function validateRegistarName(){
         submitButton.classList.remove("cursor-not-allowed")
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("domainNameField").addEventListener("input", validateDomainName)
+    loadDomains()
+})

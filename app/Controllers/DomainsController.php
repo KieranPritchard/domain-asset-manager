@@ -15,6 +15,19 @@
             return $user_domains;
         }
 
+        // Method to send to javascript
+        public function json():string 
+        {
+            // Stores the user domains
+            $domains = $this->fetch_domains();
+
+            // Sets the headders
+            header('Content-Type: application/json');
+
+            // Returns the encoded data
+            return json_encode($domains);
+        }
+
         // Method to prepare and create domain from model
         public function create():void
         {

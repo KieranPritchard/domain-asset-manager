@@ -57,16 +57,6 @@ use App\Models\Records;
             return $user_records;
         }
 
-        // Method to send to javascript
-        public function domains():string 
-        {
-            // Stores the user domains
-            $domains = $this->fetch_domains();
-
-            // Returns the encoded data
-            return json_encode($domains);
-        }
-
         public function subdomains():string 
         {
             // Stores the user domains
