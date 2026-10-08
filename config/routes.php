@@ -15,9 +15,6 @@
 
     // Handles the home page functions
     $router->get("/home", "HomeController@show");
-    $router->get("/home/domains", "HomeController@domains");
-    $router->get("/home/subdomains", "HomeController@subdomains");
-    $router->get("/home/records", "HomeController@records");
 
     // Handles the domains
     $router->get("/domains", "DomainsController@show");
@@ -25,4 +22,11 @@
     $router->post("/domains/create", "DomainsController@create");
     $router->post("/domains/update", "DomainsController@update");
     $router->post("/domains/delete", "DomainsController@delete");
+
+    // Handles the subdomains
+    $router->get("/subdomains", "SubdomainsController@show");
+    $router->get("/subdomains/json", "SubdomainsController@json");
+    $router->post("/subdomains/create", "SubdomainsController@create");
+    $router->post("/subdomains/update", "SubdomainsController@update");
+    $router->post("/subdomains/delete", "SubdomainsController@delete");
 ?>
