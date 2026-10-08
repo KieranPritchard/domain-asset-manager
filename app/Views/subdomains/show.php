@@ -106,9 +106,9 @@
         </div>
 
         <!-- Renders the add domain model -->
-        <?php include __DIR__ . "/partials/add_domain_modal.php"?>
-        <?php include __DIR__ . "/partials/edit_domain_modal.php"?>
-        <?php include __DIR__ . "/partials/delete_domain_modal.php"?>
+        <?php include __DIR__ . "/partials/add_subdomain_modal.php"?>
+        <?php include __DIR__ . "/partials/edit_subdomain_modal.php"?>
+        <?php include __DIR__ . "/partials/delete_subdomain_modal.php"?>
     </main>
 
     <!-- Scripts -->

@@ -206,6 +206,7 @@
 
             // Shows the page
             $this->view("subdomains/show", [
+                "domains" => $this->fetch_domains(),
                 "subdomains" => $this->fetch_subdomains(),
                 "feedback" => $feedback
             ]);
