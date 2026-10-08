@@ -65,7 +65,7 @@
                                             data-id="<?= htmlspecialchars($subdomain["id"] ?? "") ?>"
                                             data-name="<?= htmlspecialchars($subdomain["name"] ?? "") ?>"
                                             data-registrar="<?= htmlspecialchars($subdomain["registrar"] ?? "") ?>"
-                                            onclick="openEditDomainModal(this)"
+                                            onclick="openEditSubdomainModal(this)"
                                             class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
                                         >
                                             <i width="20" height="20" class="shrink-0" data-lucide="square-pen"></i>
@@ -74,7 +74,7 @@
                                             type="button"
                                             data-id="<?= htmlspecialchars($subdomain["id"] ?? "") ?>"
                                             data-name="<?= htmlspecialchars($subdomain["name"] ?? "") ?>"
-                                            onclick="openDeleteDomainModal(this)"
+                                            onclick="openDeleteSubdomainModal(this)"
                                             class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
                                         >
                                             <i width="20" height="20" class="shrink-0" data-lucide="trash-2"></i>
@@ -97,7 +97,7 @@
             <div class="mt-4 w-full">
                 <button 
                     type="button" 
-                    onclick="openModal('addDomainModal')"
+                    onclick="openModal('addSubdomainModal')"
                     class="inline-flex w-full items-center justify-center rounded-lg bg-ocean-deep-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-ocean-deep-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-ocean-deep-400 focus-visible:ring-offset-2"
                 >
                     Add Subdomain

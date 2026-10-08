@@ -50,26 +50,28 @@
                 -- DNS records for each subdomain (a subdomain can have many record types)
                 CREATE TABLE IF NOT EXISTS dns_records (
                     id INT AUTO_INCREMENT PRIMARY KEY,
-                    subdomain_id INT NOT NULL,
+                    domain_id INT NOT NULL,
                     record_type ENUM('A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'SOA', 'SRV') NOT NULL,
                     value VARCHAR(512) NOT NULL,              -- IP, target hostname, TXT content, etc.
                     ttl INT,
                     priority INT NULL,                        -- used by MX/SRV, null otherwise
                     last_verified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                    FOREIGN KEY (subdomain_id) REFERENCES subdomains(id) ON DELETE CASCADE
+                    FOREIGN KEY (domain_id) REFERENCES domains(id) ON DELETE CASCADE
                 );
             ";
 
             $history_table = "
                 -- History log so you can see what changed and when (useful for detecting takeovers/drift)
-                CREATE TABLE IF NOT EXISTS record_history (
+                CREATE TABLE IF NOT EXISTS record_history (    
                     id INT AUTO_INCREMENT PRIMARY KEY,
+                    domain_id INT NOT NULL,
                     subdomain_id INT NOT NULL,
                     record_type VARCHAR(10) NOT NULL,
                     old_value VARCHAR(512),
                     new_value VARCHAR(512),
                     change_type ENUM('added', 'removed', 'modified') NOT NULL,
                     detected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (domain_id) REFERENCES domains(id) ON DELETE CASCADE
                     FOREIGN KEY (subdomain_id) REFERENCES subdomains(id) ON DELETE CASCADE
                 );
             ";
