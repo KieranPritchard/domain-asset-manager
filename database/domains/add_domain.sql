@@ -1,0 +1,1 @@
+INSERT INTO domains (name, user_id, registrar) VALUES (?, ?, ?)

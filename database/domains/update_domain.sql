@@ -1,0 +1,1 @@
+UPDATE domains SET name = ?, registrar = ? WHERE id = ?
