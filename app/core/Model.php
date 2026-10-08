@@ -1,10 +1,12 @@
 <?php
     namespace Core;
 
-    // Creatws the modal parent class
+    use PDO;
+
+    // Creates the model parent class
     abstract class Model
     {
-        protected \mysqli $db;
+        protected PDO $db;
 
         public function __construct()
         {
