@@ -34,7 +34,11 @@ FROM php:8.4-cli-alpine
 
 LABEL authors="kieranpritchard"
 
-RUN docker-php-ext-install mysqli
+# Install system dependencies required for PostgreSQL and compile extensions
+RUN apk add --no-cache postgresql-dev \
+    && docker-php-ext-install pdo_pgsql pgsql \
+    && apk del postgresql-dev \
+    && apk add --no-cache libpq
 
 WORKDIR /usr/src/dns-record-manager
 
