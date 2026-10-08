@@ -1,27 +1,48 @@
 <?php 
     namespace Core;
 
-    use mysqli;
+    // Brings in the PDO class and PDOException class from the global namespace
+    use PDO;
+    use PDOException;
 
     class Database
     {
-        // Sets the database as the private attribute
-        private static ?mysqli $conn = null;
+        // Singleton instance of the PDO connection
+        private static ?PDO $conn = null;
 
-        // Connects to the database
-        public static function connect(): mysqli
+        // Establishes a connection to the PostgreSQL database using PDO
+        public static function connect(): PDO
         {
-            $passwordPath = getenv('DB_PASSWORD'); // this holds the *path* to the secret
-            $password = trim(file_get_contents($passwordPath));
-
-            // Checks if the database attribute is
+            // If the connection is already established, return it
             if (self::$conn === null) {
-                // Creates a new database object
-                self::$conn = new mysqli($_ENV["DB_HOST"], $_ENV["DB_USER"], $password, $_ENV["DB_DATABASE"]);
+                // Determine password directly or from file path secret
+                $passwordPath = $_ENV['DB_PASSWORD_FILE'] ?? getenv('DB_PASSWORD_FILE') ?: getenv('DB_PASSWORD');
+                
+                // Read the password from the file if it exists, otherwise use the environment variable
+                $password = '';
+                if ($passwordPath && file_exists($passwordPath)) {
+                    $password = trim(file_get_contents($passwordPath));
+                } elseif (isset($_ENV['DB_PASSWORD'])) {
+                    $password = $_ENV['DB_PASSWORD'];
+                }
 
-                // Checks for a connection error
-                if (self::$conn->connect_error) {
-                    die("Connection failed: " . self::$conn->connect_error);
+                // Get database connection parameters from environment variables or use defaults
+                $host = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost';
+                $port = $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: '5432';
+                $db   = $_ENV['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: '';
+                $user = $_ENV['DB_USER'] ?? getenv('DB_USER') ?: '';
+
+                // Build PostgreSQL DSN
+                $dsn = "pgsql:host={$host};port={$port};dbname={$db}";
+
+                try {
+                    self::$conn = new PDO($dsn, $user, $password, [
+                        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                        PDO::ATTR_EMULATE_PREPARES   => false,
+                    ]);
+                } catch (PDOException $e) {
+                    die("Connection failed: " . $e->getMessage());
                 }
             }
 
