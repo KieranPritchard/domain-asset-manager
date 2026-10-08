@@ -12,22 +12,13 @@
             // Prepares a statement to check if user is registered
             $check_user_exists_stmt = $this->db->prepare("SELECT * FROM users WHERE username=(?)");
 
-            // Binds the parameters
-            $check_user_exists_stmt->bind_param("s", $username);
-
             // Executes the statement
-            $check_user_exists_stmt->execute();
-
-            // Buffers the result set so the connection is free for the next statement
-            $check_user_exists_stmt->store_result();
+            $check_user_exists_stmt->execute([$username]);
 
             // Checks the number of rows
-            if ($check_user_exists_stmt->num_rows == 1) {
-                $check_user_exists_stmt->close();
+            if ($check_user_exists_stmt->rowCount() == 1) {
                 return "User already exists.";
             }
-
-            $check_user_exists_stmt->close();
 
             // Checks if the passwords do not match
             if ($password !== $confirm_password) {
@@ -41,11 +32,7 @@
             $add_user_statement = $this->db->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
 
             // Binds the parameters
-            $add_user_statement->bind_param("ss", $username, $hashed_password);
-
-            // Executes the statement
-            $add_user_statement->execute();
-            $add_user_statement->close();
+            $add_user_statement->execute([$username, $hashed_password]);
 
             return "";
         }
@@ -57,23 +44,15 @@
             $find_user_statement = $this->db->prepare("SELECT * FROM users WHERE username = (?)");
 
             // Binds the parameters
-            $find_user_statement->bind_param("s", $username);
-
-            // Executes the statement
-            $find_user_statement->execute();
-
-            // Stores the result
-            $result = $find_user_statement->get_result();
+            $find_user_statement->execute([$username]);
 
             // Checks the number of rows
-            if ($result->num_rows !== 1) {
-                $find_user_statement->close();
+            if ($find_user_statement->rowCount() !== 1) {
                 return "Username/password do not match.";
             }
 
             // Fetches the row
-            $row = $result->fetch_assoc();
-            $find_user_statement->close();
+            $row = $find_user_statement->fetch();
 
             // Verifies the password
             if (!password_verify($password, $row["password_hash"])) {
