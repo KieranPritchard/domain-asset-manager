@@ -13,20 +13,11 @@
                 // Prepares a statement to get the domains
                 $get_user_domains = $this->db->prepare("SELECT * FROM domains WHERE user_id = ?");
 
-                $get_user_domains->bind_param("i", $id);
-
                 // Executes the statement
-                $get_user_domains->execute();
-
-                // Stores the result
-                $result = $get_user_domains->get_result();
+                $get_user_domains->execute([$id]);
 
                 // Fetches all rows as an associative array
-                $domains = $result->fetch_all(MYSQLI_ASSOC);
-
-                // Closes the statement and returns the domains
-                $get_user_domains->close();
-
+                $domains = $get_user_domains->fetchAll();
                 return $domains;
             } catch (\Throwable $err) {
                 // Returns an error
@@ -41,32 +32,19 @@
                 // Prepares a statement to check if the domain was already present
                 $check_domain_exists = $this->db->prepare("SELECT * FROM domains WHERE name = ?");
 
-                // Binds the domain parameters
-                $check_domain_exists->bind_param("s", $domain_name);
-
                 // Executes the statement
-                $check_domain_exists->execute();
-
-                // Stores the result
-                $check_domain_exists->store_result();
+                $check_domain_exists->execute([$domain_name]);
 
                 // Checks if the domain exists
-                if ($check_domain_exists->num_rows == 1) {
-                    $check_domain_exists->close();
+                if ($check_domain_exists->rowCount() == 1) {
                     return "Domain already exists";
                 }
-
-                $check_domain_exists->close();
 
                 // Adds the domain
                 $add_domain = $this->db->prepare("INSERT INTO domains (name, user_id, registrar) VALUES (?, ?, ?)");
 
-                // Binds the parameters
-                $add_domain->bind_param("sis", $domain_name, $user_id, $registar);
-
                 // Executes and closes
-                $add_domain->execute();
-                $add_domain->close();
+                $add_domain->execute([$domain_name, $user_id, $registar]);
 
                 return "";
             } catch (\Throwable $err) {
@@ -83,18 +61,15 @@
                 $domain_update = $this->db->prepare("UPDATE domains SET name = ?, registrar = ? WHERE id = ?");
 
                 // Binds the parameters
-                $domain_update->bind_param("ssi", $domain_name, $registar, $domain_id);
+                $domain_update->execute([$domain_name, $registar, $domain_id]);
 
                 // Executes the statement
                 $domain_update->execute();
 
                 // Checks whether the row actually existed / changed
-                if ($domain_update->affected_rows === 0) {
-                    $domain_update->close();
+                if ($domain_update->rowCount() === 0) {
                     return "No domain updated (not found or unchanged)";
                 }
-
-                $domain_update->close();
 
                 return "";
             } catch (\Throwable $err) {
@@ -109,19 +84,13 @@
                 // Statement to delete the domain entry
                 $domain_delete = $this->db->prepare("DELETE FROM domains WHERE id = ?");
 
-                // Binds the parameters
-                $domain_delete->bind_param("i", $domain_id);
-
                 // Executes the statement
                 $domain_delete->execute();
 
                 // Checks whether a row was actually deleted
-                if ($domain_delete->affected_rows === 0) {
-                    $domain_delete->close();
+                if ($domain_delete->rowCount() === 0) {
                     return "No domain deleted (not found)";
                 }
-
-                $domain_delete->close();
 
                 return "";
             } catch (\Throwable $err) {

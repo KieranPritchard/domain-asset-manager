@@ -15,27 +15,14 @@
                     return [];
                 }
 
-                // Builds one placeholder per id, e.g. "?,?,?"
-                $placeholders = implode(",", array_fill(0, count($subdomain_ids), "?"));
-
                 // Prepares a statement to get the records
-                $get_records = $this->db->prepare("SELECT * FROM dns_records WHERE subdomain_id IN ($placeholders)");
-
-                // Binds every id as an integer
-                $types = str_repeat("i", count($subdomain_ids));
-                $get_records->bind_param($types, ...array_map("intval", $subdomain_ids));
+                $get_records = $this->db->prepare("SELECT * FROM dns_records WHERE subdomain_id IN (" . implode(",", array_fill(0, count($subdomain_ids), "?")) . ")");
 
                 // Executes the statement
-                $get_records->execute();
-
-                // Stores the result
-                $result = $get_records->get_result();
+                $get_records->execute($subdomain_ids);
 
                 // Fetches all rows as an associative array
-                $records = $result->fetch_all(MYSQLI_ASSOC);
-
-                // Closes the statement and returns the records
-                $get_records->close();
+                $records = $get_records->fetchAll();
 
                 return $records;
             } catch (\Throwable $err) {
@@ -52,11 +39,7 @@
                 $add_record = $this->db->prepare("INSERT INTO dns_records (record_type, subdomain_id, value, ttl, priority) VALUES (?, ?, ?, ?, ?)");
 
                 // Binds the parameters
-                $add_record->bind_param("sisii", $type, $subdomain_id, $value, $ttl, $priority);
-
-                // Executes and closes
-                $add_record->execute();
-                $add_record->close();
+                $add_record->execute([$type, $subdomain_id, $value, $ttl, $priority]);
 
                 return "";
             } catch (\Throwable $err) {
@@ -72,19 +55,13 @@
                 // Statement to update the record entry
                 $record_update = $this->db->prepare("UPDATE dns_records SET record_type = ?, value = ?, ttl = ?, priority = ? WHERE id = ?");
 
-                // Binds the parameters
-                $record_update->bind_param("ssiii", $type, $value, $ttl, $priority, $record_id);
-
                 // Executes the statement
-                $record_update->execute();
+                $record_update->execute([$type, $value, $ttl, $priority, $record_id]);
 
                 // Checks whether the row actually existed / changed
-                if ($record_update->affected_rows === 0) {
-                    $record_update->close();
+                if ($record_update->rowCount() === 0) {
                     return "No record updated (not found or unchanged)";
                 }
-
-                $record_update->close();
 
                 return "";
             } catch (\Throwable $err) {
@@ -99,19 +76,13 @@
                 // Statement to delete the record entry
                 $record_delete = $this->db->prepare("DELETE FROM dns_records WHERE id = ?");
 
-                // Binds the parameters
-                $record_delete->bind_param("i", $record_id);
-
                 // Executes the statement
-                $record_delete->execute();
+                $record_delete->execute([$record_id]);
 
                 // Checks whether a row was actually deleted
-                if ($record_delete->affected_rows === 0) {
-                    $record_delete->close();
+                if ($record_delete->rowCount() === 0) {
                     return "No record deleted (not found)";
                 }
-
-                $record_delete->close();
 
                 return "";
             } catch (\Throwable $err) {

@@ -15,27 +15,14 @@
                     return [];
                 }
 
-                // Builds one placeholder per id, e.g. "?,?,?"
-                $placeholders = implode(",", array_fill(0, count($domain_ids), "?"));
-
                 // Prepares a statement to get the subdomains
-                $get_subdomains = $this->db->prepare("SELECT * FROM subdomains WHERE domain_id IN ($placeholders)");
-
-                // Binds every id as an integer
-                $types = str_repeat("i", count($domain_ids));
-                $get_subdomains->bind_param($types, ...array_map("intval", $domain_ids));
+                $get_subdomains = $this->db->prepare("SELECT * FROM subdomains WHERE domain_id IN (" . implode(",", array_fill(0, count($domain_ids), "?")) . ")");
 
                 // Executes the statement
-                $get_subdomains->execute();
-
-                // Stores the result
-                $result = $get_subdomains->get_result();
+                $get_subdomains->execute($domain_ids);
 
                 // Fetches all rows as an associative array
-                $subdomains = $result->fetch_all(MYSQLI_ASSOC);
-
-                // Closes the statement and returns the subdomains
-                $get_subdomains->close();
+                $subdomains = $get_subdomains->fetchAll();
 
                 return $subdomains;
             } catch (\Throwable $err) {
@@ -51,32 +38,19 @@
                 // Prepares a statement to check if the subdomain was already present
                 $check_subdomain_exists = $this->db->prepare("SELECT id FROM subdomains WHERE fqdn = ?");
 
-                // Binds the parameters
-                $check_subdomain_exists->bind_param("s", $fqdn);
-
                 // Executes the statement
-                $check_subdomain_exists->execute();
-
-                // Stores the result
-                $check_subdomain_exists->store_result();
+                $check_subdomain_exists->execute([$fqdn]);
 
                 // Checks if the subdomain exists
-                if ($check_subdomain_exists->num_rows >= 1) {
-                    $check_subdomain_exists->close();
+                if ($check_subdomain_exists->rowCount() >= 1) {
                     return "Subdomain already exists";
                 }
-
-                $check_subdomain_exists->close();
 
                 // Adds the subdomain
                 $add_subdomain = $this->db->prepare("INSERT INTO subdomains (domain_id, fqdn) VALUES (?, ?)");
 
-                // Binds the parameters
-                $add_subdomain->bind_param("is", $domain_id, $fqdn);
-
                 // Executes and closes
-                $add_subdomain->execute();
-                $add_subdomain->close();
+                $add_subdomain->execute([$domain_id, $fqdn]);
 
                 return "";
             } catch (\Throwable $err) {
@@ -92,19 +66,13 @@
                 // Statement to update the subdomain entry
                 $subdomain_update = $this->db->prepare("UPDATE subdomains SET fqdn = ?, status = ? WHERE id = ?");
 
-                // Binds the parameters
-                $subdomain_update->bind_param("ssi", $fqdn, $status, $subdomain_id);
-
                 // Executes the statement
-                $subdomain_update->execute();
+                $subdomain_update->execute([$fqdn, $status, $subdomain_id]);
 
                 // Checks whether the row actually existed / changed
-                if ($subdomain_update->affected_rows === 0) {
-                    $subdomain_update->close();
+                if ($subdomain_update->rowCount() === 0) {
                     return "No subdomain updated (not found or unchanged)";
                 }
-
-                $subdomain_update->close();
 
                 return "";
             } catch (\Throwable $err) {
@@ -120,18 +88,12 @@
                 $subdomain_delete = $this->db->prepare("DELETE FROM subdomains WHERE id = ?");
 
                 // Binds the parameters
-                $subdomain_delete->bind_param("i", $subdomain_id);
-
-                // Executes the statement
-                $subdomain_delete->execute();
+                $subdomain_delete->execute([$subdomain_id]);
 
                 // Checks whether a row was actually deleted
-                if ($subdomain_delete->affected_rows === 0) {
-                    $subdomain_delete->close();
+                if ($subdomain_delete->rowCount() === 0) {
                     return "No subdomain deleted (not found)";
                 }
-
-                $subdomain_delete->close();
 
                 return "";
             } catch (\Throwable $err) {
