@@ -4,9 +4,10 @@
     use App\Models\Auth;
     use Core\Controller;
     use App\Models\Domains;
+    use App\Models\Subdomains;
     use App\Models\Records;
 
-    // DNS records controller
+    // Records controller
     class RecordsController extends Controller
     {
         // Record types allowed by the ENUM in the table
@@ -28,34 +29,57 @@
             }
         }
 
-        // Method to fetch the ids of the domains the user owns
-        private function owned_domain_ids():array
+        // Method to fetch the user's domains
+        private function fetch_domains():array
         {
             $domains = (new Domains)->get_domains($_SESSION["id"]);
 
-            return array_map(fn($domain) => (int) $domain["id"], $domains);
+            return is_array($domains) ? $domains : [];
         }
 
-        // Method to fetch every record belonging to the user's domains
-        private function fetch_records():array
+        // Method to fetch the subdomains under the user's domains
+        private function fetch_subdomains():array
         {
-            $domain_ids = $this->owned_domain_ids();
+            $domain_ids = array_map(fn($domain) => (int) $domain["id"], $this->fetch_domains());
 
             // Nothing to look up if the user has no domains
             if (empty($domain_ids)) {
                 return [];
             }
 
-            return (new Records)->get_records($domain_ids);
+            $subdomains = (new Subdomains)->get_subdomains($domain_ids);
+
+            return is_array($subdomains) ? $subdomains : [];
         }
 
-        // Method to check a domain belongs to the logged in user
-        private function owns_domain(int $domain_id):bool
+        // Method to fetch the ids of the subdomains the user owns
+        private function owned_subdomain_ids():array
         {
-            return in_array($domain_id, $this->owned_domain_ids(), true);
+            return array_map(fn($subdomain) => (int) $subdomain["id"], $this->fetch_subdomains());
         }
 
-        // Method to check a record belongs to one of the logged in user's domains
+        // Method to fetch every record belonging to the user's subdomains
+        private function fetch_records():array
+        {
+            $subdomain_ids = $this->owned_subdomain_ids();
+
+            if (empty($subdomain_ids)) {
+                return [];
+            }
+
+            $records = (new Records)->get_records($subdomain_ids);
+
+            // The model returns a string if something went wrong
+            return is_array($records) ? $records : [];
+        }
+
+        // Method to check a subdomain belongs to the logged in user
+        private function owns_subdomain(int $subdomain_id):bool
+        {
+            return in_array($subdomain_id, $this->owned_subdomain_ids(), true);
+        }
+
+        // Method to check a record belongs to one of the logged in user's subdomains
         private function owns_record(int $record_id):bool
         {
             foreach ($this->fetch_records() as $record) {
@@ -119,15 +143,15 @@
         // Method to read and clean the record fields from the form, returns [error, data]
         private function read_record_input():array
         {
-            $domain_id = (int) ($_POST["domainId"] ?? 0);
+            $subdomain_id = (int) ($_POST["subdomainId"] ?? 0);
             $type = strtoupper(trim($_POST["recordType"] ?? ""));
             $value = trim($_POST["value"] ?? "");
             $ttl_raw = trim($_POST["ttl"] ?? "");
             $priority_raw = trim($_POST["priority"] ?? "");
 
-            // Checks the domain belongs to the user
-            if (!$this->owns_domain($domain_id)) {
-                return ["Domain not found", null];
+            // Checks the subdomain belongs to the user
+            if (!$this->owns_subdomain($subdomain_id)) {
+                return ["Subdomain not found", null];
             }
 
             // Checks the record type is allowed
@@ -165,7 +189,7 @@
             }
 
             return ["", [
-                "domain_id" => $domain_id,
+                "subdomain_id" => $subdomain_id,
                 "type" => $type,
                 "value" => $value,
                 "ttl" => $ttl,
@@ -205,11 +229,11 @@
             }
 
             $feedback = (new Records)->add_record(
-                $data["domain_id"],
                 $data["type"],
                 $data["value"],
                 $data["ttl"],
-                $data["priority"]
+                $data["priority"],
+                $data["subdomain_id"]
             );
 
             $this->respond($feedback, "Record created successfully");
@@ -237,7 +261,6 @@
 
             $feedback = (new Records)->update_record(
                 $id,
-                $data["domain_id"],
                 $data["type"],
                 $data["value"],
                 $data["ttl"],
@@ -270,8 +293,8 @@
         {
             $this->require_login();
 
-            $this->view("dns_records/show", [
-                "domains" => (new Domains)->get_domains($_SESSION["id"]),
+            $this->view("records/show", [
+                "subdomains" => $this->fetch_subdomains(),
                 "records" => $this->fetch_records(),
                 "feedback" => $params["feedback"] ?? null
             ]);
