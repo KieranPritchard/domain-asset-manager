@@ -141,8 +141,8 @@
     </script>
     <script src="/assets/js/components/sidebar.js"></script>
     <script src="/assets/js/components/modal.js"></script>
-    <script src="/assets/js/forms/add_record/addRecord.js"></script>
-    <script src="/assets/js/forms/edit_record/editRecord.js"></script>
-    <script src="/assets/js/forms/delete_record/deleteRecord.js"></script>
+    <script src="/assets/js/forms/records/add_record/addRecord.js"></script>
+    <script src="/assets/js/forms/records/edit_record/editRecord.js"></script>
+    <script src="/assets/js/forms/records/delete_record/deleteRecord.js"></script>
 </body>
 </html>

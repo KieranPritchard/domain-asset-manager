@@ -114,8 +114,8 @@
     </script>
     <script src="/assets/js/components/sidebar.js"></script>
     <script src="/assets/js/components/modal.js"></script>
-    <script src="/assets/js/forms/add_domain/addDomain.js"></script>
-    <script src="/assets/js/forms/edit_domain/editDomain.js"></script>
-    <script src="/assets/js/forms/delete_domain/deleteDomain.js"></script>
+    <script src="/assets/js/forms/domains/add_domain/addDomain.js"></script>
+    <script src="/assets/js/forms/domains/edit_domain/editDomain.js"></script>
+    <script src="/assets/js/forms/domains/delete_domain/deleteDomain.js"></script>
 </body>
 </html>
