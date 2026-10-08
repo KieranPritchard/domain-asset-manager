@@ -17,19 +17,21 @@ services:
         condition: service_healthy
     command: php -S 0.0.0.0:3000 -t public
   db:
-    image: mysql
+    image: postgres:15-alpine
     restart: always
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - db-data:/var/lib/mysql
+      - db-data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db-password
-      MYSQL_DATABASE: dns_record_manager
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+      POSTGRES_DB: dns_record_manager
     secrets:
       - db-password
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root --password=$$(cat /run/secrets/db-password) || exit 1"]
+      test: ["CMD-SHELL", "pg_isready -U root -d dns_record_manager"]
       interval: 5s
       timeout: 5s
       retries: 10

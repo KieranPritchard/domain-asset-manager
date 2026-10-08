@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS dns_records (
     priority INT NULL,                        -- used by MX/SRV, null otherwise
     last_verified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (domain_id) REFERENCES domains(id) ON DELETE CASCADE
-)
+);
 
 -- History log so you can see what changed and when (useful for detecting takeovers/drift)
 CREATE TABLE IF NOT EXISTS record_history (    
