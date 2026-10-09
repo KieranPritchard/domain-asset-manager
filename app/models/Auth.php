@@ -10,7 +10,7 @@
         public function register_user(string $username, string $password, string $confirm_password): string
         {
             // Prepares a statement to check if user is registered
-            $check_user_exists_stmt = $this->db->prepare("SELECT * FROM users WHERE username=(?)");
+            $check_user_exists_stmt = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/auth/select_user.sql'));
 
             // Executes the statement
             $check_user_exists_stmt->execute([$username]);
@@ -29,7 +29,7 @@
             $hashed_password = password_hash($password, PASSWORD_ARGON2ID);
 
             // Stores the statement to add the user to the database
-            $add_user_statement = $this->db->prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)");
+            $add_user_statement = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/auth/add_user.sql'));
 
             // Binds the parameters
             $add_user_statement->execute([$username, $hashed_password]);
@@ -41,7 +41,7 @@
         public function login_user(string $username, string $password): string
         {
             // Statement to find the user
-            $find_user_statement = $this->db->prepare("SELECT * FROM users WHERE username = (?)");
+            $find_user_statement = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/auth/select_user.sql'));
 
             // Binds the parameters
             $find_user_statement->execute([$username]);
