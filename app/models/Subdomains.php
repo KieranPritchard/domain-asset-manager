@@ -17,8 +17,11 @@
 
                 $this->db->beginTransaction();
 
-                // Prepares a statement to get the subdomains
-                $get_subdomains = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/subdomains/select_subdomains.sql'));
+                // Builds one parameter placeholder per domain ID
+                $placeholders = implode(",", array_fill(0, count($domain_ids), "?"));
+                $get_subdomains = $this->db->prepare(
+                    "SELECT * FROM subdomains WHERE domain_id IN ($placeholders)"
+                );
 
                 // Executes the statement
                 $get_subdomains->execute($domain_ids);
@@ -88,6 +91,7 @@
                     return "No subdomain updated (not found or unchanged)";
                 }
 
+                $this->db->commit();
                 return "";
             } catch (\Throwable $err) {
                 $this->db->rollBack();

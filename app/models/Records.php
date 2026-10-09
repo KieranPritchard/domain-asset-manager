@@ -17,8 +17,11 @@
 
                 $this->db->beginTransaction();
 
-                // Prepares a statement to get the records
-                $get_records = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/records/select_records.sql'));
+                // Builds one parameter placeholder per subdomain ID
+                $placeholders = implode(",", array_fill(0, count($subdomain_ids), "?"));
+                $get_records = $this->db->prepare(
+                    "SELECT * FROM dns_records WHERE subdomain_id IN ($placeholders)"
+                );
 
                 // Executes the statement
                 $get_records->execute($subdomain_ids);

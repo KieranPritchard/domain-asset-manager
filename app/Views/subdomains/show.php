@@ -5,8 +5,14 @@
     require __DIR__ . "/../components/ui/modal.php";
 
     // Guards against unset errors
+    $domains = $data["domains"] ?? null;
     $subdomains = $data["subdomains"] ?? null;
     $feedback = $data["feedback"] ?? null;
+
+    $domain_names = [];
+    foreach ($domains ?? [] as $domain) {
+        $domain_names[(int) ($domain["id"] ?? 0)] = (string) ($domain["name"] ?? "");
+    }
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Domain Inventory Dashboard | Domains</title>
+    <title>Domain Inventory Dashboard | Subdomains</title>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body class="min-h-screen flex bg-ocean-deep-50">
@@ -63,8 +69,9 @@
                                         <button
                                             type="button"
                                             data-id="<?= htmlspecialchars($subdomain["id"] ?? "") ?>"
-                                            data-name="<?= htmlspecialchars($subdomain["name"] ?? "") ?>"
-                                            data-registrar="<?= htmlspecialchars($subdomain["registrar"] ?? "") ?>"
+                                            data-name="<?= htmlspecialchars($subdomain["fqdn"] ?? "") ?>"
+                                            data-parent="<?= htmlspecialchars($domain_names[(int) ($subdomain["domain_id"] ?? 0)] ?? "") ?>"
+                                            data-status="<?= htmlspecialchars($subdomain["status"] ?? "") ?>"
                                             onclick="openEditSubdomainModal(this)"
                                             class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
                                         >
@@ -73,7 +80,7 @@
                                         <button
                                             type="button"
                                             data-id="<?= htmlspecialchars($subdomain["id"] ?? "") ?>"
-                                            data-name="<?= htmlspecialchars($subdomain["name"] ?? "") ?>"
+                                            data-name="<?= htmlspecialchars($subdomain["fqdn"] ?? "") ?>"
                                             onclick="openDeleteSubdomainModal(this)"
                                             class="font-medium text-ocean-deep-500 hover:text-ocean-deep-700"
                                         >
@@ -84,8 +91,8 @@
                             <?php endforeach; ?>
                         <?php else: ?>
                             <tr>
-                                <td colspan="6" class="px-4 py-8 text-center text-ocean-deep-400">
-                                    No domains found.
+                                <td colspan="7" class="px-4 py-8 text-center text-ocean-deep-400">
+                                    No subdomains found.
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -105,7 +112,7 @@
             </div>
         </div>
 
-        <!-- Renders the add domain model -->
+        <!-- Renders the add subdomain modal -->
         <?php include __DIR__ . "/partials/add_subdomain_modal.php"?>
         <?php include __DIR__ . "/partials/edit_subdomain_modal.php"?>
         <?php include __DIR__ . "/partials/delete_subdomain_modal.php"?>

@@ -36,4 +36,7 @@
     $router->post("/dns-records/create", "RecordsController@create");
     $router->post("/dns-records/update", "RecordsController@update");
     $router->post("/dns-records/delete", "RecordsController@delete");
+
+    // Handles the history
+    $router->get("/history", "HistoryController@show");
 ?>

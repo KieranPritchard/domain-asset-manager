@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
 <body class="min-h-screen flex bg-ocean-deep-50">
-    <?php renderSidebar($site_links, "Records"); ?>
+    <?php renderSidebar($site_links, "DNS Records"); ?>
 
     <main class="flex-1 min-w-0 px-4 py-8 md:px-8">
         <!-- Container for the dashboard -->

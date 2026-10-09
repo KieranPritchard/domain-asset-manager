@@ -72,11 +72,8 @@
                 // Statement to update the domain entry
                 $domain_update = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/domains/update_domain.sql'));
 
-                // Binds the parameters
+                // Executes the statement with the update values
                 $domain_update->execute([$domain_name, $registar, $domain_id]);
-
-                // Executes the statement
-                $domain_update->execute();
 
                 // Checks whether the row actually existed / changed
                 if ($domain_update->rowCount() === 0) {

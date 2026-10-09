@@ -14,17 +14,21 @@
         {
             $user_domains = (new Domains)->get_domains($_SESSION["id"]);
 
+            if (!is_array($user_domains)) {
+                throw new \RuntimeException("Could not load dashboard domains: " . $user_domains);
+            }
+
             return $user_domains;
         }
 
         // Method to fetch the subdomains
-        private function fetch_subdomains():array
+        private function fetch_subdomains(?array $domains = null):array
         {
             // Stores the domain ids
             $ids = [];
 
             // Stores the user domains
-            $domains = $this->fetch_domains();
+            $domains ??= $this->fetch_domains();
 
             // Loops over the domains
             foreach ($domains as $domain) {
@@ -34,17 +38,21 @@
 
             $user_subdomains = (new Subdomains)->get_subdomains($ids);
 
+            if (!is_array($user_subdomains)) {
+                throw new \RuntimeException("Could not load dashboard subdomains: " . $user_subdomains);
+            }
+
             return $user_subdomains;
         }
 
         // Method to fetch the subdomains
-        private function fetch_records():array
+        private function fetch_records(?array $subdomains = null):array
         {
             // Stores the domain ids
             $ids = [];
 
             // Stores the user domains
-            $subdomains = $this->fetch_subdomains();
+            $subdomains ??= $this->fetch_subdomains();
 
             // Loops over the domains
             foreach ($subdomains as $subdomain) {
@@ -53,6 +61,10 @@
             }
 
             $user_records = (new Records)->get_records($ids);
+
+            if (!is_array($user_records)) {
+                throw new \RuntimeException("Could not load dashboard DNS records: " . $user_records);
+            }
 
             return $user_records;
         }
@@ -88,9 +100,15 @@
 
             // Stores the user domains
             $domains = $this->fetch_domains();
+            $subdomains = $this->fetch_subdomains($domains);
+            $records = $this->fetch_records($subdomains);
 
             // Shows the page
-            $this->view("home/show", ["domains" => $domains]);
+            $this->view("home/show", [
+                "domains" => $domains,
+                "subdomains" => $subdomains,
+                "records" => $records
+            ]);
         }
     }
 ?>

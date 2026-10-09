@@ -19,11 +19,11 @@ let editStatusValid = false
 
 // Fills the edit modal with the clicked row's data, then opens it
 function openEditSubdomainModal(button) {
-    const fqdn = button.dataset.name.trim().toLowerCase()
-    const parentName = button.dataset.parent.trim().toLowerCase()
+    const fqdn = (button.dataset.name ?? "").trim().toLowerCase()
+    const parentName = (button.dataset.parent ?? "").trim().toLowerCase()
 
     // Strips ".parent.com" so only the prefix is editable
-    editingParentSuffix = "." + parentName
+    editingParentSuffix = parentName ? "." + parentName : ""
     const prefix = fqdn.endsWith(editingParentSuffix)
         ? fqdn.slice(0, -editingParentSuffix.length)
         : fqdn
@@ -31,7 +31,7 @@ function openEditSubdomainModal(button) {
     document.getElementById("editSubdomainId").value = button.dataset.id
     document.getElementById("editSubdomainNameField").value = prefix
     document.getElementById("editParentSuffix").textContent = editingParentSuffix
-    document.getElementById("editStatusField").value = button.dataset.status
+    document.getElementById("editStatusField").value = button.dataset.status ?? ""
 
     editingSubdomainName = fqdn
 

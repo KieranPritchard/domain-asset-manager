@@ -3,7 +3,7 @@
 
     use Core\Model;
 
-    // Record history model
+    // DNS record history model
     class RecordHistory extends Model
     {
         // Change types allowed by change_type_enum

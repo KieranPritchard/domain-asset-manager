@@ -29,7 +29,7 @@
             $hashed_password = password_hash($password, PASSWORD_ARGON2ID);
 
             // Stores the statement to add the user to the database
-            $add_user_statement = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/auth/add_user.sql'));
+            $add_user_statement = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/auth/register_user.sql'));
 
             // Binds the parameters
             $add_user_statement->execute([$username, $hashed_password]);
