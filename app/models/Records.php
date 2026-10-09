@@ -18,7 +18,7 @@
                 $this->db->beginTransaction();
 
                 // Prepares a statement to get the records
-                $get_records = $this->db->prepare("SELECT * FROM dns_records WHERE subdomain_id IN (" . implode(",", array_fill(0, count($subdomain_ids), "?")) . ")");
+                $get_records = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/records/select_records.sql'));
 
                 // Executes the statement
                 $get_records->execute($subdomain_ids);
@@ -43,7 +43,7 @@
                 $this->db->beginTransaction();
 
                 // Adds the record
-                $add_record = $this->db->prepare("INSERT INTO dns_records (record_type, subdomain_id, value, ttl, priority) VALUES (?, ?, ?, ?, ?)");
+                $add_record = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/records/add_record.sql'));
 
                 // Binds the parameters
                 $add_record->execute([$type, $subdomain_id, $value, $ttl, $priority]);
@@ -65,7 +65,7 @@
                 $this->db->beginTransaction();
 
                 // Statement to update the record entry
-                $record_update = $this->db->prepare("UPDATE dns_records SET record_type = ?, value = ?, ttl = ?, priority = ? WHERE id = ?");
+                $record_update = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/records/update_record.sql'));
 
                 // Executes the statement
                 $record_update->execute([$type, $value, $ttl, $priority, $record_id]);
@@ -91,7 +91,7 @@
                 $this->db->beginTransaction();
 
                 // Statement to delete the record entry
-                $record_delete = $this->db->prepare("DELETE FROM dns_records WHERE id = ?");
+                $record_delete = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/records/delete_record.sql'));
 
                 // Executes the statement
                 $record_delete->execute([$record_id]);

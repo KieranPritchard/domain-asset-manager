@@ -1,0 +1,1 @@
+DELETE FROM dns_records WHERE id = ?

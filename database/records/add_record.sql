@@ -1,0 +1,1 @@
+INSERT INTO dns_records (record_type, subdomain_id, value, ttl, priority) VALUES (?, ?, ?, ?, ?)

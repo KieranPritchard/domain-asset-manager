@@ -1,0 +1,1 @@
+UPDATE dns_records SET record_type = ?, value = ?, ttl = ?, priority = ? WHERE id = ?

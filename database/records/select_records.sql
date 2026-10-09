@@ -1,0 +1,1 @@
+SELECT * FROM dns_records WHERE subdomain_id IN (" . implode(",", array_fill(0, count($subdomain_ids), "?")) . ")
