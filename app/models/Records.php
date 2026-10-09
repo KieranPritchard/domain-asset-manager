@@ -15,6 +15,8 @@
                     return [];
                 }
 
+                $this->db->beginTransaction();
+
                 // Prepares a statement to get the records
                 $get_records = $this->db->prepare("SELECT * FROM dns_records WHERE subdomain_id IN (" . implode(",", array_fill(0, count($subdomain_ids), "?")) . ")");
 
@@ -24,8 +26,11 @@
                 // Fetches all rows as an associative array
                 $records = $get_records->fetchAll();
 
+                $this->db->commit();
+
                 return $records;
             } catch (\Throwable $err) {
+                $this->db->rollBack();
                 // Returns an error
                 return (string) $err;
             }
@@ -35,14 +40,19 @@
         public function add_record(string $type, string $value, int $ttl, int $priority, int $subdomain_id): string
         {
             try {
+                $this->db->beginTransaction();
+
                 // Adds the record
                 $add_record = $this->db->prepare("INSERT INTO dns_records (record_type, subdomain_id, value, ttl, priority) VALUES (?, ?, ?, ?, ?)");
 
                 // Binds the parameters
                 $add_record->execute([$type, $subdomain_id, $value, $ttl, $priority]);
 
+                $this->db->commit();
+
                 return "";
             } catch (\Throwable $err) {
+                $this->db->rollBack();
                 // Returns an error
                 return (string) $err;
             }
@@ -52,11 +62,15 @@
         public function update_record(int $record_id, string $type, string $value, int $ttl, int $priority): string
         {
             try {
+                $this->db->beginTransaction();
+
                 // Statement to update the record entry
                 $record_update = $this->db->prepare("UPDATE dns_records SET record_type = ?, value = ?, ttl = ?, priority = ? WHERE id = ?");
 
                 // Executes the statement
                 $record_update->execute([$type, $value, $ttl, $priority, $record_id]);
+
+                $this->db->commit();
 
                 // Checks whether the row actually existed / changed
                 if ($record_update->rowCount() === 0) {
@@ -65,6 +79,7 @@
 
                 return "";
             } catch (\Throwable $err) {
+                $this->db->rollBack();
                 return (string) $err;
             }
         }
@@ -73,6 +88,8 @@
         public function delete_record(int $record_id): string
         {
             try {
+                $this->db->beginTransaction();
+
                 // Statement to delete the record entry
                 $record_delete = $this->db->prepare("DELETE FROM dns_records WHERE id = ?");
 
@@ -84,8 +101,10 @@
                     return "No record deleted (not found)";
                 }
 
+                $this->db->commit();
                 return "";
             } catch (\Throwable $err) {
+                $this->db->rollBack();
                 return (string) $err;
             }
         }
