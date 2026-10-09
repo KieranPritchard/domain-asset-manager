@@ -35,6 +35,21 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+  dns-cron:
+    build:
+      context: .
+      dockerfile: /docker/cron/Dockerfile.cron
+    environment:
+      - DB_HOST=db
+      - DB_USER=root
+      - DB_PASSWORD_FILE=/run/secrets/db-password
+      - DB_DATABASE=dns_record_manager
+    secrets:
+      - db-password
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
 volumes:
   db-data:
 secrets:
