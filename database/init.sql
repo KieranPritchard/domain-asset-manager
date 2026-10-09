@@ -22,6 +22,47 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Logs every change to a DNS record into record_history
+CREATE OR REPLACE FUNCTION log_record_history()
+RETURNS TRIGGER AS $$
+DECLARE
+    parent_domain_id INT;
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        SELECT domain_id INTO parent_domain_id FROM subdomains WHERE id = NEW.subdomain_id;
+
+        INSERT INTO record_history (domain_id, subdomain_id, record_type, old_value, new_value, change_type)
+        VALUES (parent_domain_id, NEW.subdomain_id, NEW.record_type::text, NULL, NEW.value, 'added');
+
+    ELSIF TG_OP = 'UPDATE' THEN
+        SELECT domain_id INTO parent_domain_id FROM subdomains WHERE id = NEW.subdomain_id;
+
+        IF NEW.record_type IS DISTINCT FROM OLD.record_type THEN
+            -- A type change is the old record going away and a new one appearing
+            INSERT INTO record_history (domain_id, subdomain_id, record_type, old_value, new_value, change_type)
+            VALUES (parent_domain_id, NEW.subdomain_id, OLD.record_type::text, OLD.value, NULL, 'removed'),
+                   (parent_domain_id, NEW.subdomain_id, NEW.record_type::text, NULL, NEW.value, 'added');
+
+        ELSIF NEW.value IS DISTINCT FROM OLD.value THEN
+            INSERT INTO record_history (domain_id, subdomain_id, record_type, old_value, new_value, change_type)
+            VALUES (parent_domain_id, NEW.subdomain_id, NEW.record_type::text, OLD.value, NEW.value, 'modified');
+        END IF;
+
+    ELSIF TG_OP = 'DELETE' THEN
+        SELECT domain_id INTO parent_domain_id FROM subdomains WHERE id = OLD.subdomain_id;
+
+        -- If the subdomain is already gone (it's being deleted and this is the cascade),
+        -- there's nothing to attach history to, and it would be cascade-deleted anyway
+        IF FOUND THEN
+            INSERT INTO record_history (domain_id, subdomain_id, record_type, old_value, new_value, change_type)
+            VALUES (parent_domain_id, OLD.subdomain_id, OLD.record_type::text, OLD.value, NULL, 'removed');
+        END IF;
+    END IF;
+
+    RETURN NULL;
+END;
+$$ LANGUAGE plpgsql;
+
 -- ---------- Tables ----------
 -- Creates the users table
 CREATE TABLE IF NOT EXISTS users (
@@ -102,3 +143,8 @@ CREATE TRIGGER update_dns_records_last_verified
 BEFORE UPDATE ON dns_records
 FOR EACH ROW
 EXECUTE FUNCTION update_last_verified();
+
+CREATE TRIGGER log_dns_records_history
+AFTER INSERT OR UPDATE OR DELETE ON dns_records
+FOR EACH ROW
+EXECUTE FUNCTION log_record_history();
