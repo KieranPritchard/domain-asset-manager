@@ -1,0 +1,1 @@
+INSERT INTO subdomains (domain_id, fqdn) VALUES (?, ?)

@@ -1,0 +1,1 @@
+UPDATE subdomains SET fqdn = ?, status = ? WHERE id = ?

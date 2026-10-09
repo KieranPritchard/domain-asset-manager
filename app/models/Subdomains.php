@@ -18,7 +18,7 @@
                 $this->db->beginTransaction();
 
                 // Prepares a statement to get the subdomains
-                $get_subdomains = $this->db->prepare("SELECT * FROM subdomains WHERE domain_id IN (" . implode(",", array_fill(0, count($domain_ids), "?")) . ")");
+                $get_subdomains = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/subdomains/select_subdomains.sql'));
 
                 // Executes the statement
                 $get_subdomains->execute($domain_ids);
@@ -55,7 +55,7 @@
                 }
 
                 // Adds the subdomain
-                $add_subdomain = $this->db->prepare("INSERT INTO subdomains (domain_id, fqdn) VALUES (?, ?)");
+                $add_subdomain = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/subdomains/add_subdomain.sql'));
 
                 // Executes and closes
                 $add_subdomain->execute([$domain_id, $fqdn]);
@@ -77,7 +77,7 @@
                 $this->db->beginTransaction();
 
                 // Statement to update the subdomain entry
-                $subdomain_update = $this->db->prepare("UPDATE subdomains SET fqdn = ?, status = ? WHERE id = ?");
+                $subdomain_update = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/subdomains/update_subdomain.sql'));
 
                 // Executes the statement
                 $subdomain_update->execute([$fqdn, $status, $subdomain_id]);
@@ -102,7 +102,7 @@
                 $this->db->beginTransaction();
 
                 // Statement to delete the subdomain entry
-                $subdomain_delete = $this->db->prepare("DELETE FROM subdomains WHERE id = ?");
+                $subdomain_delete = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/subdomains/delete_subdomain.sql'));
 
                 // Binds the parameters
                 $subdomain_delete->execute([$subdomain_id]);

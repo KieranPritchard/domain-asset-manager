@@ -1,0 +1,1 @@
+SELECT * FROM subdomains WHERE domain_id IN (" . implode(",", array_fill(0, count($domain_ids), "?")) . ")

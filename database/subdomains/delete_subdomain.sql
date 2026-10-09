@@ -1,0 +1,1 @@
+DELETE FROM subdomains WHERE id = ?
