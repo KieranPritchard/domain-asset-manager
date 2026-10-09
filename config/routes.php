@@ -29,4 +29,11 @@
     $router->post("/subdomains/create", "SubdomainsController@create");
     $router->post("/subdomains/update", "SubdomainsController@update");
     $router->post("/subdomains/delete", "SubdomainsController@delete");
+
+    // Handles the DNS records
+    $router->get("/dns-records", "RecordsController@show");
+    $router->get("/dns-records/json", "RecordsController@json");
+    $router->post("/dns-records/create", "RecordsController@create");
+    $router->post("/dns-records/update", "RecordsController@update");
+    $router->post("/dns-records/delete", "RecordsController@delete");
 ?>
