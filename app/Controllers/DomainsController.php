@@ -48,11 +48,14 @@
                 && (bool) preg_match('/^(?!-)[a-z0-9-]{1,63}(?<!-)(\.(?!-)[a-z0-9-]{1,63}(?<!-))+$/', $domain_name);
         }
 
-        // Method to turn the model's feedback into a message and re-render the page
+        // Method to turn the model's feedback into a toast and redirect
         private function respond(string $feedback, string $success):void
         {
-            // The model returns an empty string on success
-            $this->show(["feedback" => $feedback ?: $success]);
+            if ($feedback !== "") {
+                $this->redirectWithToast("/domains", "error", "Domain action failed", $feedback);
+            }
+
+            $this->redirectWithToast("/domains", "success", $success);
         }
 
         // ---------- Actions ----------
@@ -80,8 +83,7 @@
 
             // Checks the domain name is valid
             if (!$this->valid_domain($domain_name)) {
-                $this->show(["feedback" => "Invalid domain name"]);
-                return;
+                $this->redirectWithToast("/domains", "error", "Invalid domain name");
             }
 
             // Stores the feedback from the model
@@ -102,14 +104,12 @@
 
             // Checks the domain belongs to the user
             if (!$this->owns_domain($id)) {
-                $this->show(["feedback" => "Domain not found"]);
-                return;
+                $this->redirectWithToast("/domains", "error", "Domain not found");
             }
 
             // Checks the domain name is valid
             if (!$this->valid_domain($domain_name)) {
-                $this->show(["feedback" => "Invalid domain name"]);
-                return;
+                $this->redirectWithToast("/domains", "error", "Invalid domain name");
             }
 
             // Stores the feedback from the model
@@ -128,8 +128,7 @@
 
             // Checks the domain belongs to the user
             if (!$this->owns_domain($id)) {
-                $this->show(["feedback" => "Domain not found"]);
-                return;
+                $this->redirectWithToast("/domains", "error", "Domain not found");
             }
 
             // Stores the feedback from the model
@@ -139,14 +138,13 @@
         }
 
         // Method to show the view
-        public function show(array $params = []):void
+        public function show():void
         {
             $this->require_login();
 
             // Shows the page
             $this->view("domains/show", [
-                "domains" => $this->fetch_domains(),
-                "feedback" => $params["feedback"] ?? null
+                "domains" => $this->fetch_domains()
             ]);
         }
     }

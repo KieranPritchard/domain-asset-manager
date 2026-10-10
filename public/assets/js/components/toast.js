@@ -41,7 +41,7 @@ function showToast(type, title, message = '', duration = 5000) {
 
     // Adds it to the screen, then fades it in
     container.appendChild(toast)
-    lucide.createIcons()
+    window.lucide?.createIcons()
     requestAnimationFrame(() => toast.classList.remove('opacity-0', 'translate-x-4'))
 
     // Removes it after the duration

@@ -17,20 +17,19 @@
 
             // Checks if there is an error
             if ($error) {
-                $this->show(["error" => $error]);
-                return;
+                $this->redirectWithToast("/login", "error", "Could not sign in", $error);
             }
 
-            // Redirects the user
-            header("location: /home");
+            $this->redirectWithToast("/home", "success", "Signed in successfully");
         }
 
         public function logout():void
         {
             (new Auth())->logout();
 
-            header("Location: /login");
-            exit;
+            session_start();
+            session_regenerate_id(true);
+            $this->redirectWithToast("/login", "success", "Signed out successfully");
         }
 
         // Method to show the page

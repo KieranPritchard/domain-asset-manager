@@ -3,11 +3,11 @@
     require __DIR__ . "/../components/ui/sidebar.php";
     require __DIR__ . "/../../../config/links.php";
     require __DIR__ . "/../components/ui/modal.php";
+    require_once __DIR__ . "/../components/ui/toast.php";
 
     // Guards against unset errors
     $domains = $data["domains"] ?? null;
     $subdomains = $data["subdomains"] ?? null;
-    $feedback = $data["feedback"] ?? null;
 
     $domain_names = [];
     foreach ($domains ?? [] as $domain) {
@@ -128,5 +128,7 @@
     <script src="/assets/js/forms/subdomains/add_subdomain/addSubdomain.js"></script>
     <script src="/assets/js/forms/subdomains/edit_subdomain/editSubdomain.js"></script>
     <script src="/assets/js/forms/subdomains/delete_subdomain/deleteSubdomain.js"></script>
+    <script src="/assets/js/components/toast.js"></script>
+    <?php renderToasts(); ?>
 </body>
 </html>

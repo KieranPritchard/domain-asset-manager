@@ -1,6 +1,7 @@
 <?php 
     // Brings in the sidebar and links
     require __DIR__ . "/../components/ui/sidebar.php";
+    require_once __DIR__ . "/../components/ui/toast.php";
     require __DIR__ . "/../../../config/links.php";
 
     $dashboard_data = json_encode([
@@ -70,5 +71,7 @@
     <script>window.dashboardData = <?= $dashboard_data ?>;</script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
     <script src="/assets/js/dashboard/metrics.js"></script>
+    <script src="/assets/js/components/toast.js"></script>
+    <?php renderToasts(); ?>
 </body>
 </html>

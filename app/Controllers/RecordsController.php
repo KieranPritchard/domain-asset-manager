@@ -197,11 +197,14 @@
             ]];
         }
 
-        // Method to turn the model's feedback into a message and re-render the page
+        // Method to turn the model's feedback into a toast and redirect
         private function respond(string $feedback, string $success):void
         {
-            // The model returns an empty string on success
-            $this->show(["feedback" => $feedback ?: $success]);
+            if ($feedback !== "") {
+                $this->redirectWithToast("/dns-records", "error", "DNS record action failed", $feedback);
+            }
+
+            $this->redirectWithToast("/dns-records", "success", $success);
         }
 
         // ---------- Actions ----------
@@ -224,8 +227,7 @@
             [$error, $data] = $this->read_record_input();
 
             if ($error !== "") {
-                $this->show(["feedback" => $error]);
-                return;
+                $this->redirectWithToast("/dns-records", "error", "Invalid DNS record", $error);
             }
 
             $feedback = (new Records)->add_record(
@@ -248,15 +250,13 @@
 
             // Checks the record belongs to the user
             if (!$this->owns_record($id)) {
-                $this->show(["feedback" => "Record not found"]);
-                return;
+                $this->redirectWithToast("/dns-records", "error", "Record not found");
             }
 
             [$error, $data] = $this->read_record_input();
 
             if ($error !== "") {
-                $this->show(["feedback" => $error]);
-                return;
+                $this->redirectWithToast("/dns-records", "error", "Invalid DNS record", $error);
             }
 
             $feedback = (new Records)->update_record(
@@ -279,8 +279,7 @@
 
             // Checks the record belongs to the user
             if (!$this->owns_record($id)) {
-                $this->show(["feedback" => "Record not found"]);
-                return;
+                $this->redirectWithToast("/dns-records", "error", "Record not found");
             }
 
             $feedback = (new Records)->delete_record($id);
@@ -289,14 +288,13 @@
         }
 
         // Method to show the view
-        public function show(array $params = []):void
+        public function show():void
         {
             $this->require_login();
 
             $this->view("records/show", [
                 "subdomains" => $this->fetch_subdomains(),
-                "records" => $this->fetch_records(),
-                "feedback" => $params["feedback"] ?? null
+                "records" => $this->fetch_records()
             ]);
         }
     }

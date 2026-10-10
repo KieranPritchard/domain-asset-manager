@@ -103,14 +103,12 @@
             $parent = $this->find_domain($domain_id);
 
             if (!$parent) {
-                $this->show(["feedback" => "Domain not found"]);
-                return;
+                $this->redirectWithToast("/subdomains", "error", "Domain not found");
             }
 
             // Checks the subdomain name is valid
             if (!$this->valid_prefix($prefix)) {
-                $this->show(["feedback" => "Invalid subdomain name"]);
-                return;
+                $this->redirectWithToast("/subdomains", "error", "Invalid subdomain name");
             }
 
             // Builds the fqdn, e.g. api + example.com
@@ -119,12 +117,7 @@
             // Stores the feedback from the model
             $feedback = (new Subdomains)->add_subdomain($fqdn, $domain_id);
 
-            // Checks if there is any feedback
-            if (!$feedback) {
-                $this->show(["feedback" => "Subdomain created successfully"]);
-            } else {
-                $this->show(["feedback" => $feedback]);
-            }
+            $this->respond($feedback, "Subdomain created successfully");
         }
 
         // Method to prepare and update subdomain from model
@@ -141,19 +134,16 @@
             $subdomain = $this->find_subdomain($subdomain_id);
 
             if (!$subdomain) {
-                $this->show(["feedback" => "Subdomain not found"]);
-                return;
+                $this->redirectWithToast("/subdomains", "error", "Subdomain not found");
             }
 
             // Checks the inputs are valid
             if (!$this->valid_prefix($prefix)) {
-                $this->show(["feedback" => "Invalid subdomain name"]);
-                return;
+                $this->redirectWithToast("/subdomains", "error", "Invalid subdomain name");
             }
 
             if (!in_array($status, self::STATUSES, true)) {
-                $this->show(["feedback" => "Invalid status"]);
-                return;
+                $this->redirectWithToast("/subdomains", "error", "Invalid status");
             }
 
             // Rebuilds the fqdn from the subdomain's own parent domain
@@ -163,12 +153,7 @@
             // Stores the feedback from the model
             $feedback = (new Subdomains)->update_subdomain($subdomain_id, $fqdn, $status);
 
-            // Checks if there is any feedback
-            if (!$feedback) {
-                $this->show(["feedback" => "Subdomain updated successfully"]);
-            } else {
-                $this->show(["feedback" => $feedback]);
-            }
+            $this->respond($feedback, "Subdomain updated successfully");
         }
 
         // Method to prepare and delete subdomain from model
@@ -181,34 +166,33 @@
 
             // Checks the subdomain exists and belongs to the user
             if (!$this->find_subdomain($subdomain_id)) {
-                $this->show(["feedback" => "Subdomain not found"]);
-                return;
+                $this->redirectWithToast("/subdomains", "error", "Subdomain not found");
             }
 
             // Stores the feedback from the model
             $feedback = (new Subdomains)->delete_subdomain($subdomain_id);
 
-            // Checks if there is any feedback
-            if (!$feedback) {
-                $this->show(["feedback" => "Subdomain deleted successfully"]);
-            } else {
-                $this->show(["feedback" => $feedback]);
+            $this->respond($feedback, "Subdomain deleted successfully");
+        }
+
+        private function respond(string $feedback, string $success):void
+        {
+            if ($feedback !== "") {
+                $this->redirectWithToast("/subdomains", "error", "Subdomain action failed", $feedback);
             }
+
+            $this->redirectWithToast("/subdomains", "success", $success);
         }
 
         // Method to show the view
-        public function show(array $params = []):void
+        public function show():void
         {
             $this->require_login();
-
-            // Stores the feedback
-            $feedback = $params["feedback"] ?? null;
 
             // Shows the page
             $this->view("subdomains/show", [
                 "domains" => $this->fetch_domains(),
-                "subdomains" => $this->fetch_subdomains(),
-                "feedback" => $feedback
+                "subdomains" => $this->fetch_subdomains()
             ]);
         }
     }

@@ -19,12 +19,10 @@
 
                 // Checks if there is an error
                 if ($error) {
-                    $this->show(["error" => $error]);
-                    return; 
+                    $this->redirectWithToast("/signup", "error", "Could not create account", $error);
                 }
 
-                // Redirects the user
-                header("location: /login");
+                $this->redirectWithToast("/login", "success", "Account created successfully");
             } catch (\Throwable $e) {
                 error_log("build_db failed: " . $e->getMessage());
                 throw $e;

@@ -2,6 +2,7 @@
     // Brings in the sidebar and links
     require __DIR__ . "/../components/ui/sidebar.php";
     require __DIR__ . "/../../../config/links.php";
+    require_once __DIR__ . "/../components/ui/toast.php";
 
     // Guards against unset errors
     $history = $data["history"] ?? null;
@@ -121,6 +122,10 @@
     </main>
 
     <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>lucide.createIcons()</script>
     <script src="/assets/js/components/sidebar.js"></script>
+    <script src="/assets/js/components/toast.js"></script>
+    <?php renderToasts(); ?>
 </body>
 </html>

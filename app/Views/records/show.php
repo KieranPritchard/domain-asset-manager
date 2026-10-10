@@ -3,11 +3,11 @@
     require __DIR__ . "/../components/ui/sidebar.php";
     require __DIR__ . "/../../../config/links.php";
     require __DIR__ . "/../components/ui/modal.php";
+    require_once __DIR__ . "/../components/ui/toast.php";
 
     // Guards against unset errors
     $records = $data["records"] ?? null;
     $subdomains = $data["subdomains"] ?? [];
-    $feedback = $data["feedback"] ?? null;
 
     // Maps subdomain ids to FQDNs so the table can show a name instead of an id
     $subdomain_names = [];
@@ -31,13 +31,6 @@
     <main class="flex-1 min-w-0 px-4 py-8 md:px-8">
         <!-- Container for the dashboard -->
         <div class="w-full max-w-6xl mx-auto">
-            <!-- Feedback from the last action -->
-            <?php if (!empty($feedback)): ?>
-                <div class="mb-4 rounded-lg border border-ocean-deep-200 bg-white px-4 py-3 text-sm text-ocean-deep-800 shadow-sm">
-                    <?= htmlspecialchars($feedback) ?>
-                </div>
-            <?php endif; ?>
-
             <!-- Flexbox for the table -->
             <div class="overflow-x-auto rounded-lg border border-ocean-deep-200 bg-white shadow-sm">
                 <table class="w-full text-left text-sm">
@@ -145,5 +138,7 @@
     <script src="/assets/js/forms/records/add_record/addRecord.js"></script>
     <script src="/assets/js/forms/records/edit_record/editRecord.js"></script>
     <script src="/assets/js/forms/records/delete_record/deleteRecord.js"></script>
+    <script src="/assets/js/components/toast.js"></script>
+    <?php renderToasts(); ?>
 </body>
 </html>

@@ -3,10 +3,10 @@
     require __DIR__ . "/../components/ui/sidebar.php";
     require __DIR__ . "/../../../config/links.php";
     require __DIR__ . "/../components/ui/modal.php";
+    require_once __DIR__ . "/../components/ui/toast.php";
 
     // Guards against unset errors
     $domains = $data["domains"] ?? null;
-    $feedback = $data["feedback"] ?? null;
 ?>
 
 <!DOCTYPE html>
@@ -117,5 +117,7 @@
     <script src="/assets/js/forms/domains/add_domain/addDomain.js"></script>
     <script src="/assets/js/forms/domains/edit_domain/editDomain.js"></script>
     <script src="/assets/js/forms/domains/delete_domain/deleteDomain.js"></script>
+    <script src="/assets/js/components/toast.js"></script>
+    <?php renderToasts(); ?>
 </body>
 </html>

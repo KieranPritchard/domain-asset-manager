@@ -1,4 +1,6 @@
 <?php 
+    require_once __DIR__ . "/../components/ui/toast.php";
+
     // Guards against unset errors
     $login_error = $data["error"] ?? null;
 ?>
@@ -99,5 +101,9 @@
 
     <!-- Connects to the javascript -->
     <script src="/assets/js/forms/login/login.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>lucide.createIcons()</script>
+    <script src="/assets/js/components/toast.js"></script>
+    <?php renderToasts(); ?>
 </body>
 </html>

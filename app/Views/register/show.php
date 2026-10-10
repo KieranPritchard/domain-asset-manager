@@ -1,4 +1,6 @@
 <?php 
+    require_once __DIR__ . "/../components/ui/toast.php";
+
     // Guards against unset errors
     $register_error = $data["error"] ?? null;
 ?>
@@ -113,5 +115,9 @@
 
     <!-- Connects to the script -->
     <script src="/assets/js/forms/register/register.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script>lucide.createIcons()</script>
+    <script src="/assets/js/components/toast.js"></script>
+    <?php renderToasts(); ?>
 </body>
 </html>
