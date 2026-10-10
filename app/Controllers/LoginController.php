@@ -25,6 +25,14 @@
             header("location: /home");
         }
 
+        public function logout():void
+        {
+            (new Auth())->logout();
+
+            header("Location: /login");
+            exit;
+        }
+
         // Method to show the page
         public function show(array $params = []): void
         {

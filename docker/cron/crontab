@@ -1,3 +1,0 @@
-# Run the Certificate Transparency & DNS sync script every 10 minutes
-*/10 * * * * . /etc/environment; /usr/local/bin/sync_dns.sh >> /var/log/cron.log 2>&1
-# An extra empty line at the bottom is REQUIRED by cron!

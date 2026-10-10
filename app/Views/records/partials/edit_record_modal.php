@@ -12,7 +12,7 @@
 
     // Stores the edit record modal content
     $edit_record_content = "
-        <form action='/records/update' method='post' class='space-y-4'>
+        <form action='/dns-records/update' method='post' class='space-y-4'>
             <!-- Stores the id of the record being edited -->
             <input type='hidden' name='recordId' id='editRecordId'>
 
@@ -88,6 +88,7 @@
                         placeholder='e.g. 3600'
                         class='{$input_class}'
                     >
+                    <span id='editRecordTtlError' class='hidden text-xs font-semibold text-red-600'></span>
                 </div>
 
                 <!-- Priority field, only shown for MX and SRV -->
@@ -104,6 +105,7 @@
                         placeholder='e.g. 10'
                         class='{$input_class}'
                     >
+                    <span id='editRecordPriorityError' class='hidden text-xs font-semibold text-red-600'></span>
                 </div>
             </div>
 

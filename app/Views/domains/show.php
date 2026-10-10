@@ -17,7 +17,7 @@
     <title>Domain Inventory Dashboard | Domains</title>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
-<body class="min-h-screen flex bg-ocean-deep-50">
+<body class="min-h-screen flex overflow-x-clip bg-ocean-deep-50">
     <?php renderSidebar($site_links, "Domains"); ?>
 
     <main class="flex-1 min-w-0 px-4 py-8 md:px-8">

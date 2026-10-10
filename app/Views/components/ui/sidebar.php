@@ -3,7 +3,7 @@
 ?>
     <aside
         id="sidebar"
-        class="relative h-screen bg-ocean-deep-400 text-ocean-deep-950 transition-all duration-300 ease-in-out flex flex-col justify-between p-4 w-64"
+        class="sticky top-0 z-30 h-screen shrink-0 bg-ocean-deep-400 text-ocean-deep-950 transition-all duration-300 ease-in-out flex flex-col justify-between p-4 w-64"
     >
         <!-- Top section: header and toggle button -->
         <div>

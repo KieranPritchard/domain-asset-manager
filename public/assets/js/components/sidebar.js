@@ -24,6 +24,8 @@
         setCollapsed(collapsed);
     });
 
-    // Restore last state on load
-    setCollapsed(localStorage.getItem('sidebarCollapsed') === '1');
+    // Restore the saved state, or default to a collapsed sidebar on narrow screens
+    const savedState = localStorage.getItem('sidebarCollapsed');
+    const collapsed = window.matchMedia('(max-width: 767px)').matches || savedState === '1';
+    setCollapsed(collapsed);
 })();

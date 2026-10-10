@@ -4,7 +4,7 @@
     <!-- Modal container -->
     <div
         id="<?= htmlspecialchars($id) ?>"
-        class="fixed inset-0 z-50 hidden items-center justify-center p-4 modal-backdrop"
+        class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto p-4 modal-backdrop"
         onclick="closeModal('<?= htmlspecialchars($id) ?>')"
     >
         <!-- Backdrop -->
@@ -12,7 +12,7 @@
 
         <!-- Modal panel -->
         <div
-            class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl border border-slate-200/80"
+            class="relative my-auto max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto overscroll-contain rounded-xl border border-slate-200/80 bg-white p-6 shadow-xl"
             onclick="event.stopPropagation()"
         >
             <div class="flex items-center justify-between mb-4">

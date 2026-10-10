@@ -1,7 +1,7 @@
 <?php 
     // Stores the delete record modal content
     $delete_record_content = "
-        <form action='/records/delete' method='post' class='space-y-4'>
+        <form action='/dns-records/delete' method='post' class='space-y-4'>
             <!-- Stores the id of the record being deleted -->
             <input type='hidden' name='recordId' id='deleteRecordId'>
 

@@ -23,7 +23,7 @@
     <title>Domain Inventory Dashboard | Subdomains</title>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
-<body class="min-h-screen flex bg-ocean-deep-50">
+<body class="min-h-screen flex overflow-x-clip bg-ocean-deep-50">
     <?php renderSidebar($site_links, "Subdomains"); ?>
 
     <main class="flex-1 min-w-0 px-4 py-8 md:px-8">
@@ -125,8 +125,8 @@
     </script>
     <script src="/assets/js/components/sidebar.js"></script>
     <script src="/assets/js/components/modal.js"></script>
-    <script src="/assets/js/forms/domains/add_subdomain/addSubdomain.js"></script>
-    <script src="/assets/js/forms/domains/edit_subdomain/editSubdomain.js"></script>
-    <script src="/assets/js/forms/domains/delete_subdomain/deleteSubdomain.js"></script>
+    <script src="/assets/js/forms/subdomains/add_subdomain/addSubdomain.js"></script>
+    <script src="/assets/js/forms/subdomains/edit_subdomain/editSubdomain.js"></script>
+    <script src="/assets/js/forms/subdomains/delete_subdomain/deleteSubdomain.js"></script>
 </body>
 </html>

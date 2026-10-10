@@ -1,16 +1,14 @@
 FROM alpine:3.19
 
-# Install required tools: dcron, bash, psql, dig, curl, jq
-RUN apk add --no-cache dcron bash postgresql15-client bind-tools curl jq
+# Install required tools: bash, psql, dig, curl, jq
+RUN apk add --no-cache bash postgresql15-client bind-tools curl jq
 
-# Copy script and crontab file
-COPY sync_dns.sh /usr/local/bin/sync_dns.sh
-COPY crontab /etc/crontabs/root
+# Copy the DNS sync scripts
+COPY docker/cron/sync_dns.sh /usr/local/bin/sync_dns.sh
+COPY docker/cron/dns_sync_loop.sh /usr/local/bin/dns_sync_loop.sh
 
 # Set permissions
-RUN chmod +x /usr/local/bin/sync_dns.sh && \
-    chmod 0600 /etc/crontabs/root && \
-    touch /var/log/cron.log
+RUN chmod +x /usr/local/bin/sync_dns.sh /usr/local/bin/dns_sync_loop.sh
 
-# Export environment variables and launch crond
-CMD env > /etc/environment && crond -f -l 2
+# Run DNS sync every 10 minutes without a cron daemon
+CMD ["/bin/sh", "/usr/local/bin/dns_sync_loop.sh"]

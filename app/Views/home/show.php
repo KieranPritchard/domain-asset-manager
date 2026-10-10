@@ -18,7 +18,7 @@
     <title>Domain Inventory Dashboard | Home</title>
     <link rel="stylesheet" href="/assets/css/main.css">
 </head>
-<body class="min-h-screen flex bg-slate-50">
+<body class="min-h-screen flex overflow-x-clip bg-slate-50">
     <?php renderSidebar($site_links, "Home"); ?>
 
     <main class="flex-1 min-w-0 px-4 py-4 md:px-6">

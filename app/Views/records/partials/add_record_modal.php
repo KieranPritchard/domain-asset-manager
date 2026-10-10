@@ -12,7 +12,7 @@
 
     // Stores the add record modal content
     $add_record_content = "
-        <form action='/records/create' method='post' class='space-y-4'>
+        <form action='/dns-records/create' method='post' class='space-y-4'>
             <!-- Container for the form details -->
             <div class='space-y-3'>
                 <!-- Subdomain field -->
@@ -23,6 +23,7 @@
                     <select required name='subdomainId' id='addRecordSubdomainId' class='{$input_class}'>
                         {$subdomain_options}
                     </select>
+                    <span id='addRecordSubdomainError' class='hidden text-xs font-semibold text-red-600'></span>
                 </div>
 
                 <!-- Record type field -->
@@ -83,6 +84,7 @@
                         placeholder='e.g. 3600'
                         class='{$input_class}'
                     >
+                    <span id='addRecordTtlError' class='hidden text-xs font-semibold text-red-600'></span>
                 </div>
 
                 <!-- Priority field, only shown for MX and SRV -->
@@ -99,6 +101,7 @@
                         placeholder='e.g. 10'
                         class='{$input_class}'
                     >
+                    <span id='addRecordPriorityError' class='hidden text-xs font-semibold text-red-600'></span>
                 </div>
             </div>
 

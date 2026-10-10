@@ -172,7 +172,7 @@ function recordKey(subdomainId, type, value) {
 // Loads the records from the PHP endpoint, returns [{ id, key }]
 async function fetchExistingRecords() {
     try {
-        const response = await fetch("/records/json")
+        const response = await fetch("/dns-records/json")
         if (!response.ok) throw new Error(`HTTP ${response.status}`)
         const data = await response.json()
 

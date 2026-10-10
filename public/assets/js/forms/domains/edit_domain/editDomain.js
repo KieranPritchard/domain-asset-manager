@@ -1,3 +1,4 @@
+(() => {
 // Stores a cached list of existing domains
 let existingDomains = []
 
@@ -25,6 +26,8 @@ function openEditDomainModal(button) {
 
     openModal("editDomainModal")
 }
+
+window.openEditDomainModal = openEditDomainModal
 
 // Loads the domains from the PHP endpoint
 async function loadDomains() {
@@ -113,3 +116,4 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("editRegistarField").addEventListener("input", validateRegistarName)
     loadDomains()
 })
+})()

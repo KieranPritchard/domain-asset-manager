@@ -15,7 +15,7 @@ export PGDATABASE=${DB_DATABASE:-dns_record_manager}
 
 RECORD_TYPES=("A" "AAAA" "CNAME" "MX" "TXT" "NS")
 
-echo "[$(date)] Starting Certificate Transparency DNS auto-discovery..." >> /var/log/cron.log
+echo "[$(date)] Starting Certificate Transparency DNS auto-discovery..."
 
 # Fetch all primary domains from database
 QUERY="SELECT id, name FROM domains;"
@@ -23,7 +23,7 @@ QUERY="SELECT id, name FROM domains;"
 psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -t -A -F"," -c "$QUERY" | while IFS="," read -r domain_id domain_name; do
     [ -z "$domain_id" ] && continue
 
-    echo "[$(date)] Discovering subdomains for: $domain_name" >> /var/log/cron.log
+    echo "[$(date)] Discovering subdomains for: $domain_name"
 
     # 1. Fetch subdomains from crt.sh API using curl + jq
     # - Filters out wildcard prefixes (*.)
@@ -50,7 +50,7 @@ psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -t -A -F"," -c "$QUERY" | while 
                 has_records=true
 
                 # Upsert Subdomain into PostgreSQL
-                subdomain_id=$(psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -t -A -c "
+                subdomain_id=$(psql -q -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -t -A -c "
                     INSERT INTO subdomains (domain_id, fqdn, status, last_checked)
                     VALUES ($domain_id, '$fqdn', 'active', NOW())
                     ON CONFLICT (fqdn) DO UPDATE 
@@ -93,4 +93,4 @@ psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -t -A -F"," -c "$QUERY" | while 
     done
 done
 
-echo "[$(date)] Auto-discovery and DNS synchronization complete." >> /var/log/cron.log
+echo "[$(date)] Auto-discovery and DNS synchronization complete."

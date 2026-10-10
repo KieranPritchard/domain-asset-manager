@@ -38,7 +38,7 @@ services:
   dns-cron:
     build:
       context: .
-      dockerfile: /docker/cron/Dockerfile.cron
+      dockerfile: ./docker/cron/Dockerfile.cron
     environment:
       - DB_HOST=db
       - DB_USER=root

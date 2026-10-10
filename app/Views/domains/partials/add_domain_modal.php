@@ -12,7 +12,6 @@
                         </label>
                         <input 
                             required
-                            onkeyup='validateDomainName()'
                             name='domainName'
                             id='domainNameField'
                             type='text'
@@ -33,7 +32,6 @@
                         </label>
                         <input 
                             required
-                            onkeyup='validateRegistarField()'
                             name='registar'
                             id='registarField'
                             type='text'
@@ -52,6 +50,7 @@
             <div class='flex justify-between gap-2 pt-3 border-t border-slate-100'>
                 <button
                     id=\"cancelBtn\"
+                    type='button'
                     onClick=\"closeModal('addDomainModal')\"
                     class='w-full p-2 border border-ocean-deep-600 text-ocean-deep-600 hover:bg-ocean-deep-600/60 rounded-lg transition-colors cursor-pointer'
                 >
@@ -60,7 +59,6 @@
                 <button
                     id=\"submitBtn\"
                     type='submit'
-                    onClick=\"closeModal('addDomainModal')\"
                     class='w-full p-2 bg-ocean-deep-600 text-white hover:bg-ocean-deep-700 rounded-lg transition-colors cursor-pointer'
                 >
                     Submit
