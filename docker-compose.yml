@@ -23,7 +23,8 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./database/init.sql:/schema/init.sql:ro
+      - ./database/init-databases.sh:/docker-entrypoint-initdb.d/init-databases.sh:ro
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
@@ -31,7 +32,7 @@ services:
     secrets:
       - db-password
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root -d dns_record_manager"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U root -d dns_record_manager"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -54,6 +55,8 @@ services:
     build:
       context: .
       target: test
+    profiles:
+      - test
     depends_on:
       db:
         condition: service_healthy
@@ -61,7 +64,7 @@ services:
       - DB_HOST=db
       - DB_USER=root
       - DB_PASSWORD_FILE=/run/secrets/db-password
-      - DB_DATABASE=dns_record_manager
+      - DB_DATABASE=dns_record_manager_test
     secrets:
       - db-password
     command: ./vendor/bin/phpunit

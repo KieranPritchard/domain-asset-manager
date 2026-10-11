@@ -21,8 +21,14 @@
                 // Keeps the limit sensible, and cast to int so it's safe to put in the query
                 $limit = max(1, min($limit, 1000));
 
+                // Builds one parameter placeholder per subdomain ID
+                $placeholders = implode(",", array_fill(0, count($subdomain_ids), "?"));
+
+                // Gets the query from the file and fills in the placeholders
+                $sql = str_replace(":ids", $placeholders, file_get_contents(__DIR__ . '/../../database/history/get_history.sql'));
+
                 // Prepares a statement to get the history
-                $get_history = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/history/get_history.sql'));
+                $get_history = $this->db->prepare($sql);
 
                 // Executes the statement
                 $get_history->execute(array_merge(array_map("intval", $subdomain_ids), [$limit]));

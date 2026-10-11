@@ -9,6 +9,19 @@
         // Method to get the domains
         public function get_domains(int $id): string|array
         {
+            // Validates the ID
+            if(!$id){
+                return "Invalid ID";
+            }
+
+            if ($id <= 0) {
+                return "Invalid ID";
+            }
+            
+            if (!is_int($id)) {
+                return "Invalid ID";
+            }
+
             try {
                 // Prepares a statement to get the domains
                 $get_user_domains = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/domains/get_domain_by_id.sql'));
@@ -77,6 +90,8 @@
 
                 // Checks whether the row actually existed / changed
                 if ($domain_update->rowCount() === 0) {
+                    // Rolls back so the transaction is not left open
+                    $this->db->rollBack();
                     return "No domain updated (not found or unchanged)";
                 }
 
@@ -107,6 +122,8 @@
 
                 // Checks whether a row was actually deleted
                 if ($domain_delete->rowCount() === 0) {
+                    // Rolls back so the transaction is not left open
+                    $this->db->rollBack();
                     return "No domain deleted (not found)";
                 }
 

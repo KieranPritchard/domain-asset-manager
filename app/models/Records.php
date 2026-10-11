@@ -73,16 +73,24 @@
                 // Executes the statement
                 $record_update->execute([$type, $value, $ttl, $priority, $record_id]);
 
-                $this->db->commit();
-
                 // Checks whether the row actually existed / changed
                 if ($record_update->rowCount() === 0) {
+                    // Rolls back so the transaction is not left open
+                    $this->db->rollBack();
+
                     return "No record updated (not found or unchanged)";
                 }
 
+                // Commits only once we know a row was updated
+                $this->db->commit();
+
                 return "";
             } catch (\Throwable $err) {
-                $this->db->rollBack();
+                // Rolls back only if a transaction is open
+                if ($this->db->inTransaction()) {
+                    $this->db->rollBack();
+                }
+
                 return (string) $err;
             }
         }
@@ -101,6 +109,7 @@
 
                 // Checks whether a row was actually deleted
                 if ($record_delete->rowCount() === 0) {
+                    $this->db->rollBack();
                     return "No record deleted (not found)";
                 }
 

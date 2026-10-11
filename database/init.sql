@@ -1,3 +1,5 @@
+---------- Database Initialization Script ----------
+
 -- ---------- Types ----------
 CREATE TYPE status_enum AS ENUM ('active', 'inactive', 'unknown');
 CREATE TYPE record_type_enum AS ENUM ('A', 'AAAA', 'CNAME', 'MX', 'TXT', 'NS', 'SOA', 'SRV');
