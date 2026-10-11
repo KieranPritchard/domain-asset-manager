@@ -20,8 +20,8 @@ WORKDIR /usr/src/dns-record-manager
 COPY package.json package-lock.json* ./
 RUN npm install
 
-COPY tailwind.config.js ./
 COPY app/Views ./app/Views
+COPY public/assets/js ./public/assets/js
 COPY public/assets/css/input.css ./public/assets/css/input.css
 
 RUN npx @tailwindcss/cli \
@@ -44,6 +44,7 @@ WORKDIR /usr/src/dns-record-manager
 
 # Copy application source code
 COPY . .
+COPY --from=tailwind /usr/src/dns-record-manager/public/assets/css/main.css ./public/assets/css/main.css
 
 # Overwrite vendor folder with cleaned production dependencies from build stage
 COPY --from=build /usr/src/dns-record-manager/vendor ./vendor

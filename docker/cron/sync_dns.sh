@@ -8,21 +8,27 @@ else
     export PGPASSWORD=${DB_PASSWORD:-root}
 fi
 
+# Set default values for database connection parameters if not provided
 export PGHOST=${DB_HOST:-db}
 export PGPORT=${DB_PORT:-5432}
 export PGUSER=${DB_USER:-root}
 export PGDATABASE=${DB_DATABASE:-dns_record_manager}
 
+# Define the DNS record types to check
 RECORD_TYPES=("A" "AAAA" "CNAME" "MX" "TXT" "NS")
-
-echo "[$(date)] Starting Certificate Transparency DNS auto-discovery..."
 
 # Fetch all primary domains from database
 QUERY="SELECT id, name FROM domains;"
 
+# Log the start of the DNS synchronization process
+echo "[$(date)] Starting Certificate Transparency DNS auto-discovery..."
+
+# Loop through each domain and perform DNS discovery and synchronization
 psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -t -A -F"," -c "$QUERY" | while IFS="," read -r domain_id domain_name; do
+    # Skip if domain_id is empty (should not happen, but added as a safeguard)
     [ -z "$domain_id" ] && continue
 
+    # Log the domain currently being processed
     echo "[$(date)] Discovering subdomains for: $domain_name"
 
     # 1. Fetch subdomains from crt.sh API using curl + jq
@@ -37,7 +43,9 @@ psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -t -A -F"," -c "$QUERY" | while 
     # Always ensure the apex domain itself is included
     all_fqdns=$(echo -e "${domain_name}\n${discovered_fqdns}" | sort -u)
 
+    # Loop through each fully qualified domain name (FQDN) and check for DNS records
     echo "$all_fqdns" | while read -r fqdn; do
+        # Skip if fqdn is empty (should not happen, but added as a safeguard)
         [ -z "$fqdn" ] && continue
 
         has_records=false
