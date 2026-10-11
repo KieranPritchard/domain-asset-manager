@@ -1,103 +1,127 @@
 # DNS Record Manager
 
-DNS Record Manager is a PHP web application for tracking domains, discovered subdomains, DNS records, and changes to those records. It includes a dashboard, authenticated domain management, and a background DNS discovery and synchronization service.
+![GitHub Created At](https://img.shields.io/github/created-at/KieranPritchard/dns_record_manger) ![GitHub License](https://img.shields.io/github/license/KieranPritchard/dns_record_manger) ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/KieranPritchard/dns_record_manger) ![GitHub last commit](https://img.shields.io/github/last-commit/KieranPritchard/dns_record_manger) ![GitHub language count](https://img.shields.io/github/languages/count/KieranPritchard/dns_record_manger) ![GitHub Repo stars](https://img.shields.io/github/stars/KieranPritchard/dns_record_manger)
 
-## Features
+## Project Description
 
-- User registration and login, with Argon2id password hashing.
-- Manage domains, subdomains, and DNS records through the web interface.
-- Dashboard charts summarizing domains, subdomains, and records.
-- Record history for additions, removals, and value changes.
-- Periodic subdomain discovery from Certificate Transparency data and DNS lookups.
-- PostgreSQL-backed data storage with triggers for timestamps and record history.
-- Docker Compose setup for the web app, database, and DNS synchronization service.
+### Objective
 
-## Requirements
+To build a PHP web application that keeps track of my domains, the subdomains found under them, their DNS records, and any changes to those records over time. I also wanted to make something that helps to detect subdomain takeovers, which is why every subdomain has a status. I wanted to build a full MVC project from scratch without a framework, with a real database behind it and a background service that keeps the data up to date by itself.
 
-- Docker Engine and the Docker Compose plugin.
-- An available host port `3000` for the web application. PostgreSQL is also published on host port `5432` by the Compose configuration.
+### Features
 
-## Getting started with Docker Compose
+- **User Accounts:** Registration and login, with passwords hashed using Argon2id.
+- **Domain Management:** Add, edit and delete domains, subdomains and DNS records through the web interface.
+- **Dashboard:** Charts that summarise the number of domains, subdomains and records.
+- **Record History:** Every addition, removal and value change to a record is logged, using a database trigger.
+- **Automatic Discovery:** A separate service finds subdomains from Certificate Transparency data, then checks them with DNS lookups.
+- **Subdomain Status:** Each subdomain has a status that the sync service keeps updated, so subdomains that could be taken over are easier to spot.
+- **Toast Notifications:** Small pop up alerts for adding, editing, deleting and errors, styled to match the modals and sidebar.
+- **Automated Tests:** PHPUnit tests for each model, run in Docker against their own test database so my real data is never touched.
+- **Docker Compose Setup:** One command starts the web app, the PostgreSQL database and the DNS sync service.
 
-1. From the project root, create a local PostgreSQL password file. The file is ignored by Git and should not be committed:
+### Technology and Tools Used
 
-   ```sh
-   mkdir -p secrets/db
-   openssl rand -base64 32 > secrets/db/password.txt
-   chmod 600 secrets/db/password.txt
-   ```
+- **Language:** PHP 8.4, JavaScript, SQL, Bash.
+- **Framework/Library:** Tailwind CSS, Chart.js, Lucide icons, PHPUnit, Composer.
+- **Database:** PostgreSQL 15, accessed with PDO.
+- **Tools:** Git, Docker, Docker Compose, `dig`, crt.sh.
 
-   If you already have a password file, keep it in place; Compose uses the same secret for the database and application.
+### Challenges Faced
 
-2. Build and start the services:
+**Autoloading in Docker:** My tests worked on my Mac but failed in the container with `Class not found` errors. The cause was the PSR-4 path in `composer.json` starting with a `/`, which made it an absolute path, and a `Core\` namespace that was not mapped at all. I fixed it by using relative paths and adding a mapping for `app/Core/`.
 
-   ```sh
-   docker compose up --build -d
-   ```
+**Database Setup Only Runs Once:** The scripts in `docker-entrypoint-initdb.d` only run when the database volume is first created. I spent a long time wondering why my test database never existed, when it was just an old volume being reused. Running `docker compose down -v` before the first start fixed it. I also had to stop mounting empty folders by accident, because Docker creates a directory if the file you are mounting does not exist yet.
 
-3. Open [http://localhost:3000](http://localhost:3000), create an account, and sign in.
+**Transactions Left Open:** Some of my model methods returned a "not found" message after calling `beginTransaction()` without calling `rollBack()`. The tests then hung forever, because the next test's `TRUNCATE` was waiting on a lock that never got released. I found it by looking at `pg_stat_activity`, then added a rollback before every early return and a check with `inTransaction()` in each `catch` block.
 
-4. Follow service output when needed:
+### Outcome
 
-   ```sh
-   docker compose logs -f app db dns-cron
-   ```
+The project works as a full DNS tracking tool. Domains can be managed through the web interface, and the sync service fills in subdomains and records on its own and logs what changed. The test setup lets me change the models and check them quickly without risking real data. It taught me a lot about PDO transactions, Docker volumes and how much an environment difference between my Mac and Linux can hide.
 
-Stop the services with:
+## How to Use the Project
 
-```sh
-docker compose down
+1. **Clone the Repository:**
+   - Use git to clone the project and open the folder in a terminal.
+
+2. **Create the Database Password:**
+   - Make a local password file. It is ignored by Git, so do not commit it.
+
+```
+mkdir -p secrets/db
+openssl rand -base64 32 > secrets/db/password.txt
+chmod 600 secrets/db/password.txt
 ```
 
-The PostgreSQL data is stored in the `db-data` Docker volume and remains when the services are stopped. The database schema in `database/init.sql` is run when PostgreSQL initializes a new data volume.
+   - If you already have a password file, keep it where it is. The database and the app both use the same secret.
 
-## DNS synchronization
+3. **Start the Services:**
+   - Make sure Docker and the Docker Compose plugin are installed, and that ports `3000` and `5432` are free.
 
-The `dns-cron` service runs the synchronization script immediately at startup, then repeats it every ten minutes. It reads tracked domains from PostgreSQL, requests matching Certificate Transparency entries from `crt.sh`, checks discovered names and the domain apex with `dig`, and updates subdomain status and DNS records.
+```
+docker compose up --build -d
+```
 
-The service needs outbound network access to `crt.sh` and DNS resolvers. The scheduled synchronization runs independently of the logged-in web user.
+   - On the first start, PostgreSQL creates the main database and a separate test database, and loads the schema from `database/init.sql` into both.
 
-## Application routes
+4. **Open the App:**
+   - Go to `http://localhost:3000`, create an account and sign in.
+   - To follow the logs, use `docker compose logs -f app db dns-cron`.
 
-| Route | Purpose |
-| --- | --- |
-| `/` | Redirects to the dashboard or login page |
-| `/login`, `/signup`, `/logout` | Authentication |
-| `/home` | Dashboard |
-| `/domains` | Domain management |
-| `/subdomains` | Subdomain management |
-| `/dns-records` | DNS record management |
-| `/history` | DNS record change history |
+5. **Use the App:**
+   - `/home` is the dashboard with the charts.
+   - `/domains`, `/subdomains` and `/dns-records` are for adding, editing and deleting.
+   - `/history` shows every change to the DNS records.
+   - Management pages need you to be signed in. The `*-create`, `*-update`, `*-delete` and `/json` routes are used by the forms and validation scripts.
 
-Management pages require authentication. The `*-create`, `*-update`, `*-delete`, and `/json` routes are used by the app’s forms and validation scripts.
+6. **DNS Synchronization:**
+   - The `dns-cron` service runs when the stack starts, then repeats every ten minutes.
+   - It reads the tracked domains, asks crt.sh for matching Certificate Transparency entries, checks the discovered names and the domain apex with `dig`, then updates subdomain status and DNS records.
+   - It needs outbound access to crt.sh and DNS resolvers, and it runs whether or not anyone is logged in.
 
-## Project structure
+7. **Run the Tests:**
+   - The tests use the `dns_record_manager_test` database and are not part of a normal `up`.
 
-| Path | Description |
-| --- | --- |
-| `app/Controllers/` | Route handlers and request workflows |
-| `app/Models/` | Authentication and data-access code |
-| `app/Core/` | Router, database connection, and base controller/model |
-| `app/Views/` | PHP pages, shared components, and form modals |
-| `config/routes.php` | HTTP route definitions |
-| `config/links.php` | Sidebar navigation |
-| `database/` | Schema, triggers, and parameterized SQL statements |
-| `docker/cron/` | DNS discovery/synchronization scripts and container definition |
-| `public/` | Web entry point, compiled CSS, and JavaScript assets |
+```
+docker compose run --rm --build test
+```
 
-## Front-end assets
+   - `--build` is needed because the test files are copied into the image.
+   - The test database is only created on a fresh volume. If you change the schema, recreate it with `docker compose down -v`, which also deletes your saved data.
 
-The Docker build compiles Tailwind CSS from the PHP views and JavaScript assets. To rebuild the stylesheet locally after changing utility classes, install the Node development dependencies and run:
+8. **Rebuild the Stylesheet (Optional):**
+   - The Docker build compiles Tailwind from the views and JavaScript. To rebuild it locally after changing classes:
 
-```sh
+```
 npm install
 npx @tailwindcss/cli -i public/assets/css/input.css -o public/assets/css/main.css
 ```
 
-Dashboard charts use Chart.js, and icons use Lucide; both are loaded by the browser from their configured CDN URLs.
+   - Charts use Chart.js and icons use Lucide, both loaded from their CDN URLs by the browser.
 
-## Configuration and secrets
+9. **Find Your Way Around the Code:**
+   - `app/Controllers/` has the route handlers.
+   - `app/Models/` has authentication and data access.
+   - `app/Core/` has the router, database connection and base classes.
+   - `app/Views/` has the pages, shared components and form modals.
+   - `config/routes.php` has the routes and `config/links.php` has the sidebar links.
+   - `database/` has the schema, triggers and the SQL statements.
+   - `docker/cron/` has the DNS sync scripts.
+   - `public/` has the entry point, compiled CSS and JavaScript.
+   - `tests/` has the PHPUnit tests.
 
-The Compose file configures the database connection for the app and DNS sync service. The database password is supplied through the `db-password` Compose secret at `secrets/db/password.txt`. Keep that file private; do not put credentials in source control.
+10. **Run Without Docker (Optional):**
+    - You need PHP with the PDO PostgreSQL extension and a PostgreSQL database with the schema loaded.
+    - Set `DB_HOST`, `DB_PORT`, `DB_DATABASE` and `DB_USER`, plus either `DB_PASSWORD` or `DB_PASSWORD_FILE`.
 
-For a non-Docker PHP setup, the database connection can be configured with `DB_HOST`, `DB_PORT`, `DB_DATABASE`, and `DB_USER`, plus either `DB_PASSWORD` or `DB_PASSWORD_FILE`. The PHP runtime needs the PDO PostgreSQL extension enabled.
+11. **Stop the Services:**
+
+```
+docker compose down
+```
+
+   - The data stays in the `db-data` Docker volume until you remove it with `-v`.
+
+## Licenses
+
+License is located in the root of the repository.
