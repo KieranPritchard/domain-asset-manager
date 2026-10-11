@@ -9,6 +9,11 @@
         // Method to register user
         public function register_user(string $username, string $password, string $confirm_password): string
         {
+            // Checks that all the fields were provided
+            if ($username === "" || $password === "" || $confirm_password === "") {
+                return "All fields are required.";
+            }
+
             // Prepares a statement to check if user is registered
             $check_user_exists_stmt = $this->db->prepare(file_get_contents(__DIR__ . '/../../database/auth/select_user.sql'));
 
