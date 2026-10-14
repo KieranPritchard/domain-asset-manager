@@ -19,7 +19,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: postgresql-dev pdo_pgsql pgsql libpq unzip # Add/remove extensions as needed
+          extensions: mbstring, pdo, pdo_pgsql, pgsql # Add/remove extensions as needed
           tools: composer:v2
           coverage: none
 
