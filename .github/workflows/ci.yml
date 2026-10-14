@@ -72,5 +72,11 @@ jobs:
         env:
           PGPASSWORD: test
 
+      - name: Debug autoload
+        run: |
+          git ls-files app | head -40
+          composer dump-autoload -o
+          grep -n "Models" vendor/composer/autoload_classmap.php | head -10
+
       - name: Run PHPUnit
         run: vendor/bin/phpunit
