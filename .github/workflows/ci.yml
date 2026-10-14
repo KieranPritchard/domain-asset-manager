@@ -11,6 +11,27 @@ jobs:
     name: Prepare & Test
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: dns_record_manager
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U root -d dns_record_manager"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_USER: root
+      DB_PASSWORD_FILE: ${{ github.workspace }}/.ci-db-password
+      DB_DATABASE: dns_record_manager
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -19,7 +40,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: mbstring, pdo, pdo_pgsql, pgsql # Add/remove extensions as needed
+          extensions: mbstring, pdo, pdo_pgsql
           tools: composer:v2
           coverage: none
 
@@ -42,6 +63,14 @@ jobs:
         with:
           path: .
           options: --exclude=vendor
+
+      - name: Create DB password file
+        run: printf '%s' 'test' > .ci-db-password
+
+      - name: Load database schema
+        run: psql -h 127.0.0.1 -U root -d dns_record_manager -f database/init.sql
+        env:
+          PGPASSWORD: test
 
       - name: Run PHPUnit
         run: vendor/bin/phpunit
