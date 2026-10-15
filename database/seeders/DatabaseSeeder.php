@@ -2,24 +2,23 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\RecordedSession;
+use App\Models\VirustotalScan;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Create 5 recorded sessions, and for each session, generate 3 to 7 random scans
+        RecordedSession::factory(5)
+            ->has(
+                VirustotalScan::factory()->count(rand(3, 7)),
+                'scans' // matches the relationship method name in RecordedSession model
+            )
+            ->create();
     }
 }
