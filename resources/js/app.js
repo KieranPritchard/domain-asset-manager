@@ -1,5 +1,6 @@
 // resources/js/app.js
 import './bootstrap';
+import './config/dropzoneConfig'
 
 import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css'; // Optional: brings in default Dropzone styles if desired
