@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RecordedSession;
+use App\Models\VirustotalScan;
 use Illuminate\Http\Request;
 
 class UploadController extends Controller
