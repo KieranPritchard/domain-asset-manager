@@ -85,5 +85,7 @@ class UploadController extends Controller
                 'scan_id' => $scan->id,
             ];
         }
+
+        return response()->json($results);
     }
 }
