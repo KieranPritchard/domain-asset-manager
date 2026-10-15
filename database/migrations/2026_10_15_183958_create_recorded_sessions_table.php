@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recorded_session', function (Blueprint $table) {
+        Schema::create('recorded_sessions', function (Blueprint $table) {
             $table->id(); // Auto-incrementing primary key (bigint in PostgreSQL)
             $table->string('host', 255);
             $table->integer('file_count')->default(0);
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('recorded_session');
+        Schema::dropIfExists('recorded_sessions');
     }
 };
