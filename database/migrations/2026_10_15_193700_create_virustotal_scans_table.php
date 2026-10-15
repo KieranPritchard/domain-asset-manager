@@ -11,13 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('recorded_sessions', function (Blueprint $table) {
-            $table->id();
-            $table->string('host');
-            $table->integer('file_count');
-            $table->timestamps();
-        });
-
         Schema::create('virustotal_scans', function (Blueprint $table) {
             $table->id(); // Equivalent to auto-incrementing primary key (bigint in PostgreSQL)
             
@@ -56,8 +49,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('virustotal_scans');
     }
 };
