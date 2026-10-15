@@ -39,12 +39,19 @@ class RecordedSession extends Model
         }
 
         // Stores the session data in variables to add to the database
-        $host = e(trim($attributes["host"]));
-        $file_count = e(trim($attributes["file_count"]));
+        $host = trim($attributes["host"]);
+        $file_count = trim($attributes["file_count"]);
 
         try {
-            // Adds the data to a database
-            DB::insert("INSERT INTO recorded_sessions (host, file_count) VALUES (?,?)", [$host, $file_count]);
+            // Adds the data to a database and returns the newly inserted record
+            $insertedRow = DB::select(
+                "INSERT INTO recorded_session (host, file_count) VALUES (?, ?) RETURNING *", 
+                [$host, $file_count]
+            );
+
+            // Returns the first result (the inserted data) if successful
+            return $insertedRow[0] ?? null;
+
         } catch (\Throwable $error) {
             throw $error;
         }
