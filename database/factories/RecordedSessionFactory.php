@@ -18,7 +18,8 @@ class RecordedSessionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'host' => $this->faker->ipv4(),
+            'file_count' => $this->faker->numberBetween(1, 10),
         ];
     }
 }
