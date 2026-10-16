@@ -1,13 +1,16 @@
 <?php
-
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ScanController;
 use App\Http\Controllers\UploadController;
+use Illuminate\Support\Facades\Route;
 
-// Renders the upload page view at the root URL
+// Upload page (root and explicit /upload both render it)
 Route::get('/', [UploadController::class, 'index']);
+Route::get('/upload', [UploadController::class, 'index'])->name('upload.create');
 
-// Also supports /upload if you prefer it explicitly
-Route::get('/upload', [UploadController::class, 'index']);
+// Receives the files from Dropzone
+Route::post('/upload', [UploadController::class, 'store'])->name('upload.store');
 
-// Handles the file upload POST request from Dropzone
-Route::post('/upload', [UploadController::class, 'store']);
+// Dashboard and its data endpoints
+Route::get('/dashboard', [ScanController::class, 'dashboard'])->name('scans.dashboard');
+Route::get('/scans', [ScanController::class, 'index'])->name('scans.index');
+Route::get('/scans/status', [ScanController::class, 'status'])->name('scans.status');
