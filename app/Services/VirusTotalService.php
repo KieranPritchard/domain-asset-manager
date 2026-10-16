@@ -2,7 +2,8 @@
     namespace App\Services;
 
     use App\Models\VirustotalScan;
-    use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
     use Illuminate\Http\Client\PendingRequest;
     use Illuminate\Support\Facades\Http;
 
@@ -73,5 +74,45 @@
                     $scan->update(['status' => 'error']);
                 }
             }
+        }
+
+        /** Poll pending scans for a session; returns how many are still pending */
+        public function refreshPending(int $sessionId): int
+        {
+            // Gets the pending files
+            $pending = VirustotalScan::where('status', 'pending')
+                ->where('session_id', $sessionId)
+                ->get();
+
+            // Loops over each pending scan
+            foreach ($pending as $scan) {
+                try {
+                    // Creates an analysis
+                    $analysis = $this->http()
+                        ->get(self::BASE . "analyses/{$scan->analysis_id}")
+                        ->throw()
+                        ->json();
+                } catch (RequestException|ConnectionException) {
+                    continue; // stays pending, retried next poll
+                }
+                // Gets the data for analysis and updates it
+                if (data_get($analysis, 'data.attributes.status') === 'completed') {
+                    $stats = data_get($analysis, 'data.attributes.stats');
+
+                    $scan->update([
+                        'status'       => 'completed',
+                        'malicious'    => $stats['malicious'],
+                        'suspicious'   => $stats['suspicious'],
+                        'harmless'     => $stats['harmless'],
+                        'undetected'   => $stats['undetected'],
+                        'raw_response' => $analysis,
+                    ]);
+                }
+            }
+
+            // returns the pending status
+            return VirustotalScan::where('status', 'pending')
+                ->where('session_id', $sessionId)
+                ->count();
         }
     }
