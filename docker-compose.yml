@@ -9,8 +9,8 @@ x-laravel: &laravel
     DB_CONNECTION: pgsql
     DB_HOST: db
     DB_PORT: 5432
-    DB_DATABASE: vt_uploader
-    DB_USERNAME: vt_uploader
+    DB_DATABASE: malware_uploader_db
+    DB_USERNAME: malware_uploader
     DB_PASSWORD_FILE: /run/secrets/db-password
     API_KEY: /run/secrets/virus-total-key
   secrets:
@@ -42,13 +42,13 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: vt_uploader
+      POSTGRES_USER: malware_uploader
       POSTGRES_PASSWORD_FILE: /run/secrets/db-password
-      POSTGRES_DB: vt_uploader
+      POSTGRES_DB: malware_uploader_db
     secrets:
       - db-password
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U vt_uploader -d vt_uploader"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U malware_uploader -d malware_uploader_db"]
       interval: 5s
       timeout: 5s
       retries: 10
