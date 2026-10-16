@@ -22,15 +22,15 @@
         <!-- Scan results will go here -->
         <div class="grid grid-cols-1 md:grid-cols-5 gap-5">
         <!-- Displays the metrics on the page -->
-        <?php include __DIR__ . "/components/dashboard/metrics/total_files.php" ?>
-        <?php include __DIR__ . "/components/dashboard/metrics/total_malicous_points.php" ?>
-        <?php include __DIR__ . "/components/dashboard/metrics/total_suspicious_points.php" ?>
-        <?php include __DIR__ . "/components/dashboard/metrics/total_harmless.php" ?>
-        <?php include __DIR__ . "/components/dashboard/metrics/total_undetected.php" ?>
+        <x-dashboard.metrics.total-files :numOfFiles="$totalFiles" />
+        <x-dashboard.metrics.total-malicous :malicous="$totalMalicous" />
+        <x-dashboard.metrics.total-suspicous :suspicous="$totalSuspicous" />
+        <x-dashboard.metrics.total-harmless :harmless="$totalHarmless" />
+        <x-dashboard.metrics.total-undetected :undetected="totalUndetected" />
 
         <!-- Session data table-->
         <div class="md:col-span-3 flex flex-col h-full">
-            <x-session-table :data="$completeRecords" />
+            <x-dashboard.charts.session-table :data="$completeRecords" />
         </div>
 
         <!-- Chart to show points per category -->
@@ -58,7 +58,7 @@
     <!-- Button to allow users to start a new scan -->
     <div class="md:col-span-5 flex flex-col">
         <a 
-            href="/upload.php"
+            href="/upload"
             class="text-center w-full py-2.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors cursor-pointer"
         >
             Start new scan
