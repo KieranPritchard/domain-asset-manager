@@ -27,12 +27,26 @@
             $completeRecords = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))
                 ->orderByDesc('created_at')
                 ->get();
+            
+            // Calculates the metrics
+            $totalFiles = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))->count();
+            $totalHarmless = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))->sum('harmless');
+            $totalSuspicous = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))->sum('suspicious');
+            $totalMalicous = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))->sum('malicious');
+            $totalUndetected = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))->sum('undetected');
 
             // Returns the view with the total pending
             return view('scans.dashboard', [
                 'totalPending' => $totalPending,
                 'complete'     => $totalPending === 0,
                 'completeRecords'=> $completeRecords,
+                // Handles the metrics
+                'totalFiles'=> $totalFiles,
+                'totalHarmless'=> $totalHarmless,
+                'totalSuspicous'=> $totalSuspicous,
+                'totalMalicous' => $totalMalicous,
+                'totalUndetected'=> $totalUndetected,
+
             ]);
         }
 
