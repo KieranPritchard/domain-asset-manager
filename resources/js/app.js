@@ -2,6 +2,8 @@
 import './bootstrap';
 import './config/dropzoneConfig'
 import './errors/uploadErrors'
+import './dashboard/charts/categoryChart'
+import './dashboard/charts/perFileChart'
 
 import Dropzone from 'dropzone';
 import 'dropzone/dist/dropzone.css'; // Optional: brings in default Dropzone styles if desired
