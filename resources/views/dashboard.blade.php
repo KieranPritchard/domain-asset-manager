@@ -30,7 +30,7 @@
 
         <!-- Session data table-->
         <div class="md:col-span-3 flex flex-col h-full">
-            <x-file-table :data="$completeRecords" />
+            <x-session-table :data="$completeRecords" />
         </div>
 
         <!-- Chart to show points per category -->
