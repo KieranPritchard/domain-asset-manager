@@ -77,12 +77,7 @@
         }
     </script>
 
-    <!-- Brings in the metric handlers -->
-    <script src="/js/dashboard/metrics/totalFiles.js"></script>
-    <script src="/js/dashboard/metrics/totalHarmless.js"></script>
-    <script src="/js/dashboard/metrics/totalMalicious.js"></script>
-    <script src="/js/dashboard/metrics/totalSuspicious.js"></script>
-    <script src="/js/dashboard/metrics/totalUndetected.js"></script>
+    <!-- Brings in handlers -->
     <script src="/js/dashboard/charts/categoryChart.js"></script>
     <script src="/js/dashboard/charts/perFileChart.js"></script>
 </body>
