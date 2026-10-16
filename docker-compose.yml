@@ -1,0 +1,72 @@
+x-laravel: &laravel
+  build:
+    context: .
+    target: production
+  env_file: .env
+  environment:
+    APP_ENV: production
+    APP_DEBUG: "false"
+    DB_CONNECTION: pgsql
+    DB_HOST: db
+    DB_PORT: 5432
+    DB_DATABASE: vt_uploader
+    DB_USERNAME: vt_uploader
+    DB_PASSWORD_FILE: /run/secrets/db-password
+    API_KEY: /run/secrets/virus-total-key
+  secrets:
+    - db-password
+    - virus-total-key
+  volumes:
+    - uploads:/var/www/html/storage/app/private
+  depends_on:
+    db:
+      condition: service_healthy
+
+services:
+  app:
+    <<: *laravel
+    ports:
+      - "8000:8000"
+    command: sh -c "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8000"
+
+  scheduler:
+    <<: *laravel
+    command: php artisan schedule:work
+    restart: always
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: vt_uploader
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password
+      POSTGRES_DB: vt_uploader
+    secrets:
+      - db-password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U vt_uploader -d vt_uploader"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  test:
+    build:
+      context: .
+      target: test
+    profiles:
+      - test
+    command: php artisan test
+
+volumes:
+  db-data:
+  uploads:
+
+secrets:
+  db-password:
+    file: ./secrets/db/password.txt
+  virus-total-key:
+    file: ./secrets/virus-total-key.txt

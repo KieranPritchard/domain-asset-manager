@@ -1,0 +1,9 @@
+.git
+.env
+vendor
+node_modules
+secrets
+storage/logs/*
+storage/framework/sessions/*
+storage/app/private/*
+bootstrap/cache/*.php
