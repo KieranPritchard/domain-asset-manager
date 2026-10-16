@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'virustotal' => [
+        'key' => is_file($f = env('API_KEY', '/run/secrets/virus-total-key'))
+            ? trim(file_get_contents($f))
+            : null,
+    ],
 ];
