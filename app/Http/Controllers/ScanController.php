@@ -50,7 +50,16 @@
             ]);
         }
 
-        //TODO method which includes json return of the sessions data for the charts to use
+        // Method which includes json return of the sessions data for the charts to use
+        public function json(Request $request)
+        {
+            // Fetching the complete records
+            $completeRecords = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))
+                ->orderByDesc('created_at')
+                ->get();
+            
+            return json_encode($completeRecords);
+        }
 
         // Method to get the status
         public function status(Request $request, VirusTotalService $vt)
