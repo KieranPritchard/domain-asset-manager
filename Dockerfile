@@ -10,7 +10,19 @@ RUN composer install \
     --optimize-autoloader \
     --no-scripts
 
-# 2. Test suite (build fails if tests fail)
+# 2. NEW: Frontend assets (Vite)
+FROM node:22-alpine AS assets
+
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+
+COPY vite.config.js ./
+COPY resources ./resources
+COPY public ./public
+RUN npm run build
+
+# 3. Test suite (build fails if tests fail)
 FROM php:8.4-cli-alpine AS test
 
 RUN apk add --no-cache postgresql-dev \
@@ -25,6 +37,8 @@ COPY composer.json composer.lock ./
 RUN composer install --no-interaction --prefer-dist --no-scripts
 
 COPY . .
+# NEW: tests that render pages need the Vite manifest too
+COPY --from=assets /app/public/build ./public/build
 RUN composer dump-autoload --optimize \
     && cp .env.example .env \
     && php artisan key:generate
@@ -32,7 +46,7 @@ RUN composer dump-autoload --optimize \
 ENV APP_ENV=testing DB_CONNECTION=sqlite DB_DATABASE=:memory:
 RUN php artisan test
 
-# 3. Final runtime image
+# 4. Final runtime image
 FROM php:8.4-cli-alpine AS production
 
 LABEL authors="kieranpritchard"
@@ -49,6 +63,8 @@ WORKDIR /var/www/html
 
 COPY . .
 COPY --from=vendor /app/vendor ./vendor
+# NEW: compiled CSS/JS that @vite reads from public/build
+COPY --from=assets /app/public/build ./public/build
 
 # --no-scripts skipped package discovery, so do it here.
 # Folders are listed out because Alpine's sh has no brace expansion.

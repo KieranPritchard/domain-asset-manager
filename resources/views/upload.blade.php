@@ -48,7 +48,7 @@
     </div>
 
     <!-- Renders the error modal using Blade components -->
-    <x-modal id="errorModal" title="Error Details">
+    <x-ui.modal id="errorModal" title="Error Details">
         <p class="my-2">
             <span id="errorMessage"></span>
         </p>
@@ -63,6 +63,6 @@
                 Close
             </button>
         </div>
-    </x-modal>
+    </x-ui.modal >
 </body>
 </html>

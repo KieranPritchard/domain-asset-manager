@@ -7,6 +7,8 @@ x-laravel: &laravel
     APP_ENV: production
     APP_DEBUG: "false"
     DB_CONNECTION: pgsql
+    SESSION_DRIVER: file
+    CACHE_STORE: file
     DB_HOST: db
     DB_PORT: 5432
     DB_DATABASE: malware_uploader_db
