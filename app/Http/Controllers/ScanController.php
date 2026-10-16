@@ -50,6 +50,8 @@
             ]);
         }
 
+        //TODO method which includes json return of the sessions data for the charts to use
+
         // Method to get the status
         public function status(Request $request, VirusTotalService $vt)
         {
