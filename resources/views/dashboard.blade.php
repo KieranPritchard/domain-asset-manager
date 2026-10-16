@@ -30,7 +30,7 @@
 
         <!-- Session data table-->
         <div class="md:col-span-3 flex flex-col h-full">
-            <?php include __DIR__ . "/components/dashboard/charts/session_data_table.php" ?>
+            <x-file-table :data="$completeRecords" />
         </div>
 
         <!-- Chart to show points per category -->
