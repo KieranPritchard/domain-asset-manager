@@ -23,12 +23,16 @@
             $vt->submitQueued();
             $totalPending = $vt->refreshPending($sessionId);
 
-            //TODO: Add here a ability to fetch the data from the scans table and the other metrics
+            // Fetching the complete records
+            $completeRecords = VirustotalScan::where('session_id', $request->session()->get('recorded_session_id'))
+                ->orderByDesc('created_at')
+                ->get();
 
             // Returns the view with the total pending
             return view('scans.dashboard', [
                 'totalPending' => $totalPending,
                 'complete'     => $totalPending === 0,
+                'completeRecords'=> $completeRecords,
             ]);
         }
 
