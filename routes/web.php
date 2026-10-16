@@ -14,3 +14,4 @@ Route::post('/upload', [UploadController::class, 'store'])->name('upload.store')
 Route::get('/dashboard', [ScanController::class, 'dashboard'])->name('scans.dashboard');
 Route::get('/scans', [ScanController::class, 'index'])->name('scans.index');
 Route::get('/scans/status', [ScanController::class, 'status'])->name('scans.status');
+Route::get('/json', [ScanController::class, 'json'])->name('scans.json');
