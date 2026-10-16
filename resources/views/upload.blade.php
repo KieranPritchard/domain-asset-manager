@@ -46,5 +46,23 @@
             </button>
         </div>
     </div>
+
+    <!-- Renders the error modal using Blade components -->
+    <x-modal id="errorModal" title="Error Details">
+        <p class="my-2">
+            <span id="errorMessage"></span>
+        </p>
+
+        <div class="flex justify-between gap-2 pt-3 border-t border-slate-100">
+            <button
+                id="errorModalBtn"
+                type="button"
+                onclick="closeModal('errorModal')"
+                class="w-full p-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition-colors cursor-pointer"
+            >
+                Close
+            </button>
+        </div>
+    </x-modal>
 </body>
 </html>
