@@ -33,6 +33,9 @@ const fileDropzone = new Dropzone("#filesDropzone", {
             </button>
         </div>
     `,
+    headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+    },
     
     // Dragover state handlers
     init: function() {

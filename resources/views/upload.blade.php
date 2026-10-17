@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload | Virus Total Uploader</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Laravel Vite Directive (compiles Tailwind & your JS bundle) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
