@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Virus Total Upload</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Laravel Vite Directive (compiles Tailwind & your JS bundle) -->
@@ -28,7 +29,7 @@
         <x-dashboard.metrics.total-malicous :malicous="$totalMalicous" />
         <x-dashboard.metrics.total-suspicous :suspicous="$totalSuspicous" />
         <x-dashboard.metrics.total-harmless :harmless="$totalHarmless" />
-        <x-dashboard.metrics.total-undetected :undetected="totalUndetected" />
+        <x-dashboard.metrics.total-undetected :undetected="$totalUndetected" />
 
         <!-- Session data table-->
         <div class="md:col-span-3 flex flex-col h-full">
@@ -70,9 +71,5 @@
             pollForCompletion();
         }
     </script>
-
-    <!-- Brings in handlers -->
-    <script src="/js/dashboard/charts/categoryChart.js"></script>
-    <script src="/js/dashboard/charts/perFileChart.js"></script>
 </body>
 </html>

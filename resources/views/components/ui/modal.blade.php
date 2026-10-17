@@ -12,7 +12,7 @@
     <!-- Modal panel -->
     <div 
         class="relative w-full max-w-md rounded-xl bg-white p-6 shadow-xl border border-slate-200/80"
-        onclick="closeModal('{{ $id }}')"
+        onclick="event.stopPropagation()"
     >
         <!-- Modal header -->
         <div class="flex items-center justify-between mb-4">

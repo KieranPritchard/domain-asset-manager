@@ -1,19 +1,19 @@
-function openModal(modalId) {
+export function openModal(modalId) {
     // Gets the modal by its id
-    const modal = document.getElementById(modalId)
+    const modal = document.getElementById(modalId);
 
     // Checks if the modal does not exist
-    if (!modal) return
+    if (!modal) return;
 
     // Reveals the modal
-    modal.classList.remove("hidden")
-    modal.classList.add("flex")
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
 
     // Stops scrolling
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden';
 }
 
-function closeModal(modalId) {
+export function closeModal(modalId) {
     // Gets the modal by id
     const modal = document.getElementById(modalId);
     
@@ -26,6 +26,11 @@ function closeModal(modalId) {
 
     // Allows the scrolling again
     document.body.style.overflow = 'unset';
+}
+
+if (typeof window !== 'undefined') {
+    window.openModal = openModal;
+    window.closeModal = closeModal;
 }
 
 // Global Escape Key Listener

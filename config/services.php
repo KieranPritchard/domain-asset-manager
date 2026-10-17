@@ -36,8 +36,16 @@ return [
     ],
 
     'virustotal' => [
-        'key' => is_file($f = env('API_KEY', '/run/secrets/virus-total-key'))
-            ? trim(file_get_contents($f))
-            : null,
+        'key' => (function () {
+            $key = env('API_KEY', '/run/secrets/virus-total-key');
+            if ($key && is_file($key)) {
+                return trim((string) file_get_contents($key));
+            }
+            if ($key && ! str_starts_with($key, '/')) {
+                return $key;
+            }
+
+            return null;
+        })(),
     ],
 ];

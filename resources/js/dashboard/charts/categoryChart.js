@@ -1,8 +1,15 @@
 // Helper function to bring in and return the scans
 async function loadScans() {
-    const res = await fetch('/json'); // whatever you name the file above
-    const scans = await res.json();
-    return scans;
+    try {
+        const res = await fetch('/json');
+        if (!res.ok) {
+            return [];
+        }
+        const scans = await res.json();
+        return Array.isArray(scans) ? scans : [];
+    } catch {
+        return [];
+    }
 }
 
 // Helper function to build the doughnut charts data
@@ -26,31 +33,40 @@ function buildDoughnutData(scans) {
     return { clean, malicious, suspicious };
 }
 
-async function renderDoughnut() {
-    const scans = await loadScans(); // from the fetch() function earlier
+export async function renderDoughnut() {
+    const canvas = document.getElementById('categoryChart');
+    if (!canvas || typeof Chart === 'undefined') {
+        return;
+    }
+
+    const scans = await loadScans();
     const { clean, malicious, suspicious } = buildDoughnutData(scans);
 
-    new Chart(document.getElementById('categoryChart'), {
-    type: 'doughnut',
-    data: {
-        labels: ['Clean', 'Malicious', 'Suspicious'],
-        datasets: [{
-        data: [clean, malicious, suspicious],
-        backgroundColor: [
-            'rgba(40, 167, 69, 0.7)',   // green
-            'rgba(220, 53, 69, 0.7)',   // red
-            'rgba(255, 193, 7, 0.7)'    // amber
-        ],
-        borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-        legend: { position: 'bottom' }
+    new Chart(canvas, {
+        type: 'doughnut',
+        data: {
+            labels: ['Clean', 'Malicious', 'Suspicious'],
+            datasets: [{
+                data: [clean, malicious, suspicious],
+                backgroundColor: [
+                    'rgba(40, 167, 69, 0.7)',   // green
+                    'rgba(220, 53, 69, 0.7)',   // red
+                    'rgba(255, 193, 7, 0.7)'    // amber
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
         }
-    }
     });
 }
 
-renderDoughnut();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderDoughnut);
+} else {
+    renderDoughnut();
+}

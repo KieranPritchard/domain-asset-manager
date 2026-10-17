@@ -1,8 +1,15 @@
 // Helper function to bring in and return the scans
 async function loadScans() {
-    const res = await fetch('/json'); // whatever you name the file above
-    const scans = await res.json();
-    return scans;
+    try {
+        const res = await fetch('/json');
+        if (!res.ok) {
+            return [];
+        }
+        const scans = await res.json();
+        return Array.isArray(scans) ? scans : [];
+    } catch {
+        return [];
+    }
 }
 
 // Helper function to build the stacked bar chart data
@@ -21,51 +28,59 @@ function buildStackedData(scans) {
 }
 
 // Function to render a stacked chart
-async function renderStacked() {
+export async function renderStacked() {
+    const canvas = document.getElementById('scanStacked');
+    if (!canvas || typeof Chart === 'undefined') {
+        return;
+    }
+
     // Loads the scans and passes them into the help function to build the data
     const scans = await loadScans();
     const { labels, malicious, suspicious, undetected, harmless } = buildStackedData(scans);
 
     // Builds the chart up
-    new Chart(document.getElementById('scanStacked'), {
+    new Chart(canvas, {
         type: 'bar',
         data: {
             labels: labels,
             datasets: [
-            {
-                label: 'Malicious',
-                data: malicious,
-                backgroundColor: 'rgba(220, 53, 69, 0.7)'
-            },
-            {
-                label: 'Suspicious',
-                data: suspicious,
-                backgroundColor: 'rgba(255, 193, 7, 0.7)'
-            },
-            {
-                label: 'Undetected',
-                data: undetected,
-                backgroundColor: 'rgba(108, 117, 125, 0.5)'
-            },
-            {
-                label: 'Harmless',
-                data: harmless,
-                backgroundColor: 'rgba(40, 167, 69, 0.7)'
-            }
+                {
+                    label: 'Malicious',
+                    data: malicious,
+                    backgroundColor: 'rgba(220, 53, 69, 0.7)'
+                },
+                {
+                    label: 'Suspicious',
+                    data: suspicious,
+                    backgroundColor: 'rgba(255, 193, 7, 0.7)'
+                },
+                {
+                    label: 'Undetected',
+                    data: undetected,
+                    backgroundColor: 'rgba(108, 117, 125, 0.5)'
+                },
+                {
+                    label: 'Harmless',
+                    data: harmless,
+                    backgroundColor: 'rgba(40, 167, 69, 0.7)'
+                }
             ]
         },
         options: {
             responsive: true,
             plugins: {
-            legend: { position: 'bottom' }
+                legend: { position: 'bottom' }
             },
             scales: {
-            x: { stacked: true },
-            y: { stacked: true, beginAtZero: true }
+                x: { stacked: true },
+                y: { stacked: true, beginAtZero: true }
             }
         }
     });
 }
 
-// Runs the function
-renderStacked();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderStacked);
+} else {
+    renderStacked();
+}
