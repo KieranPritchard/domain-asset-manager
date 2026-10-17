@@ -1,3 +1,5 @@
+import Dropzone from 'dropzone'
+
 // Disables dropzones auto discovery to prevent duplication
 Dropzone.autoDiscover = false;
 
